@@ -1,0 +1,294 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">
+      {{ item?.uuid ? "Rubah" : "Kirim" }} Info
+    </ion-title>
+
+    <ion-button
+      slot="end"
+      color="warning"
+      size="small"
+      class="ion-margin-end"
+      [disabled]="formGroup.invalid || isLoading"
+      (click)="documentEditForm.ngSubmit.emit()"
+    >
+      <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+      <ion-text>Kirim</ion-text>
+    </ion-button>
+  </ion-toolbar>
+
+  <ion-segment
+    (ionChange)="segmentChanged($event)"
+    [(ngModel)]="segmentSelected"
+    class="p-1"
+  >
+    <ion-segment-button value="0" layout="icon-hide" mode="ios">
+      <ion-label>1. Info</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="1" layout="icon-hide" mode="ios">
+      <ion-label>2. Media</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="2" layout="icon-hide" mode="ios">
+      <ion-label>3. Lokasi</ion-label>
+    </ion-segment-button>
+
+    <!--
+    <ion-segment-button value="3" layout="icon-hide" mode="ios">
+      <ion-label>4. Kirim</ion-label>
+    </ion-segment-button>
+    -->
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+  <form
+    [formGroup]="formGroup"
+    (ngSubmit)="onSubmit()"
+    class="h-100 d-flex align-items-stretch"
+    #documentEditForm="ngForm"
+  >
+    <swiper
+      [config]="config"
+      (slideChange)="onSlideChange($event)"
+      (swiper)="setSwiperInstance($event)"
+      class="h-100 d-flex align-items-stretch"
+    >
+      <ng-template swiperSlide class="h-100">
+        <ion-list lines="full">
+          <ion-item>
+            <ion-icon slot="start" name="skull-outline" size="small"></ion-icon>
+            <ion-label>Peristiwa</ion-label>
+            <ion-select
+              placeholder="Pilih satu"
+              interface="action-sheet"
+              formControlName="classify"
+            >
+              <ion-select-option
+                *ngFor="let classify of threatClassify | keyvalue"
+                [value]="classify.key"
+              >
+                {{ classify.value }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon
+              slot="start"
+              name="calendar-number-outline"
+              size="small"
+            ></ion-icon>
+            <ion-label>Tanggal</ion-label>
+
+            <ion-datetime
+              formControlName="occur_at_date"
+              displayFormat="DD MMM YYYY"
+              (ionChange)="onOccurAtChange()"
+              placeholder="Set tanggal"
+            ></ion-datetime>
+          </ion-item>
+
+          <ion-item class="mb-2">
+            <ion-icon slot="start" name="time-outline" size="small"></ion-icon>
+            <ion-label>Jam</ion-label>
+            <ion-datetime
+              formControlName="occur_at_time"
+              displayFormat="HH:mm"
+              (ionChange)="onOccurAtChange()"
+              placeholder="Set jam"
+            ></ion-datetime>
+          </ion-item>
+
+          <ion-item class="mb-2">
+            <ion-icon slot="start" name="flag-outline" size="small"></ion-icon>
+            <ion-label position="stacked">Nama Kejadian *</ion-label>
+            <ion-textarea
+              autosize
+              formControlName="incident"
+              rows="1"
+              placeholder="Misal: Banjir di Kec. Jambi Selatan"
+            ></ion-textarea>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon
+              slot="start"
+              name="reader-outline"
+              size="small"
+            ></ion-icon>
+            <ion-label position="stacked">Keterangan</ion-label>
+            <ion-textarea
+              autosize
+              formControlName="description"
+              rows="1"
+              placeholder="Jelaskan lebih rinci keadaan sekitar"
+            ></ion-textarea>
+          </ion-item>
+        </ion-list>
+      </ng-template>
+
+      <ng-template swiperSlide class="h-100">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="4">
+              <div class="ratio ratio-1x1 border">
+                <div class="d-flex align-items-center justify-content-center">
+                  <ion-progress-bar
+                    *ngIf="isUploading"
+                    [value]="progress / 100"
+                    class="position-absolute bottom-0 start-0 end-0"
+                  ></ion-progress-bar>
+
+                  <ion-spinner
+                    *ngIf="isUploading"
+                    name="crescent"
+                  ></ion-spinner>
+
+                  <ion-buttons *ngIf="!isUploading">
+                    <ion-button *ngIf="isApp" (click)="selectSource()">
+                      <ion-icon
+                        slot="icon-only"
+                        name="image-outline"
+                      ></ion-icon>
+                    </ion-button>
+
+                    <ng-container *ngIf="!isApp">
+                      <input
+                        type="file"
+                        class="d-none"
+                        ng2FileSelect
+                        [uploader]="uploader"
+                        accept="image/*"
+                        #file
+                      />
+                      <ion-button
+                        (click)="file.click()"
+                        [disabled]="isUploading"
+                      >
+                        <ion-icon
+                          slot="icon-only"
+                          name="image-outline"
+                        ></ion-icon>
+                      </ion-button>
+                    </ng-container>
+                  </ion-buttons>
+                </div>
+              </div>
+            </ion-col>
+
+            <ng-container *ngFor="let picture of pictures">
+              <ion-col size="4">
+                <div class="ratio ratio-1x1">
+                  <div class="position-absolute remove-attachment top-0 end-0">
+                    <button
+                      type="button"
+                      class="
+                        btn btn-sm btn-danger
+                        d-flex
+                        align-items-center
+                        justify-content-center
+                        pt-2
+                        pb-2
+                        rounded-0
+                      "
+                      (click)="removeAttachment(picture)"
+                    >
+                      <ion-icon
+                        name="trash-outline"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </button>
+                  </div>
+
+                  <div>
+                    <ion-img
+                      *ngIf="picture['uri']"
+                      [src]="picture['uri']"
+                      class="full-image"
+                    ></ion-img>
+                  </div>
+                </div>
+              </ion-col>
+            </ng-container>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
+
+      <ng-template swiperSlide class="h-100">
+        <app-hazard-editor-map
+          [locations]="currentLocations"
+          (geocoderResultEvent)="geocoderResultEmit($event)"
+          (enableSwiperEvent)="enableSwiperEmit($event)"
+        ></app-hazard-editor-map>
+      </ng-template>
+
+      <!--
+      <ng-template swiperSlide class="h-100">
+        <table class="table table-md">
+          <tbody>
+            <tr>
+              <td>Klasifikasi</td>
+              <td>
+                {{
+                  threatClassify[formGroup.value.classify]
+                    ? threatClassify[formGroup.value.classify]
+                    : "Wajib dipilih"
+                }}
+              </td>
+            </tr>
+
+            <tr>
+              <td>Nama Kejadian</td>
+              <td>
+                {{
+                  formGroup.value.incident
+                    ? formGroup.value.incident
+                    : "Wajib diisi"
+                }}
+              </td>
+            </tr>
+
+            <tr *ngIf="formGroup.value.occur_at">
+              <td>Tanggal</td>
+              <td>{{ formGroup.value.occur_at | date: "medium" }}</td>
+            </tr>
+
+            <tr *ngIf="formGroup.value.locations?.length > 0">
+              <td>Lokasi</td>
+              <td>
+                Lat: {{ formGroup.value.locations[0].latitude }} <br />
+                Lon: {{ formGroup.value.locations[0].longitude }}
+              </td>
+            </tr>
+
+            <tr *ngIf="formGroup.value.description">
+              <td>Keterangan</td>
+              <td>{{ formGroup.value.description }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="ion-margin mt-auto pb-3 pt-3">
+          <ion-button
+            type="submit"
+            class="ion-margin-top"
+            color="warning"
+            expand="block"
+            [disabled]="formGroup.invalid || isLoading"
+          >
+            {{ item ? "Perbarui" : "Kirim" }} Info
+          </ion-button>
+        </div>
+      </ng-template>
+      -->
+    </swiper>
+  </form>
+</ion-content>

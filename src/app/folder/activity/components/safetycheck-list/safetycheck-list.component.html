@@ -1,0 +1,43 @@
+<ng-container *ngIf="safetycheck$ | async as safetycheck">
+  <div *ngIf="safetycheck?.status == 'loading'" class="ion-padding text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ion-list lines="full">
+    <ng-container *ngFor="let item of safetycheck?.data?.results">
+      <ion-item
+        detail="true"
+        [routerLink]="[
+          '/Threat',
+          item?.content_object?.classify,
+          item?.content_object?.uuid
+        ]"
+      >
+        <ion-label class="ion-text-wrap">
+          <strong>
+            <ion-text
+              [color]="item?.condition == 'affected' ? 'danger' : 'success'"
+            >
+              {{ item?.condition == "affected" ? "Terdampak" : "Aman" }}
+            </ion-text>
+            : {{ item?.content_object?.incident }}
+          </strong>
+          <p>{{ item.situation }}</p>
+          <p class="small pt-2">{{ item.create_at | date: "medium" }}</p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ion-infinite-scroll
+    [disabled]="!next"
+    threshold="100px"
+    (ionInfinite)="onLoadMore($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ng-container>

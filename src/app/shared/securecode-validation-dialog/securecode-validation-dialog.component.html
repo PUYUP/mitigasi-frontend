@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small"> Verifikasi </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p class="ion-margin">
+    Tindakan ini membutuhkan verifikasi. Kode keamanan dikirim ke
+    <strong>{{ data.issuer }}</strong>
+  </p>
+
+  <app-securecode-validation
+    [token]="data.token"
+    [challenge]="data.challenge"
+    [issuer]="data.issuer"
+    mode="dialog"
+  >
+  </app-securecode-validation>
+</ion-content>

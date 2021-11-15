@@ -1,0 +1,343 @@
+<ion-header [translucent]="true">
+  <ng-container *ngIf="user$ | async as user">
+    <ion-toolbar color="dark">
+      <ion-buttons *ngIf="user?.data?.token" slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+
+      <ion-buttons slot="end" class="ion-margin-end">
+        <!--
+        <ion-button *ngIf="user?.data?.token">
+          <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+        -->
+
+        <ion-button *ngIf="!user?.data?.token" [routerLink]="['/SignIn']">
+          <ion-icon name="person-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <ion-title size="small">Mitigasi</ion-title>
+    </ion-toolbar>
+  </ng-container>
+</ion-header>
+
+<ion-content class="ion-no-padding" color="light">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Donate']">
+          <div
+            class="d-flex align-items-center justify-content-center bg-white"
+          >
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-donation-64.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Donasi</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/FoodKit']">
+          <div
+            class="d-flex align-items-center justify-content-center bg-white"
+          >
+            <div>
+              <ion-img
+                src="/assets/disaster/parcels.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Sembako Kit</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Sensor']">
+          <div
+            class="d-flex align-items-center justify-content-center bg-white"
+          >
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-rain-sensor-64.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Sensor Banjir</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="alert alert-warning rounded-0 small text-center mb-0">
+    Ada peristiwa kebencanaan? Yuk bagikan! <br />
+    <ion-button color="warning" (click)="showHazardEditor()" size="small">
+      <ion-icon name="add-outline" slot="start"></ion-icon>
+      <ion-text>Kirim Info</ion-text>
+    </ion-button>
+  </div>
+
+  <ion-item lines="full" color="light">
+    <ion-buttons slot="end">
+      <ion-button size="small" (click)="displayMode()">
+        <ion-icon
+          slot="start"
+          [name]="viewMode ? 'map-outline' : 'reader-outline'"
+          size="small"
+        ></ion-icon>
+
+        {{ viewMode ? 'Peta' : 'List' }}
+      </ion-button>
+    </ion-buttons>
+
+    <ion-select
+      placeholder="Pilih Info"
+      interface="action-sheet"
+      (ionChange)="onClassifyChange($event)"
+      [value]="classify"
+    >
+      <ion-select-option value=""> Semua </ion-select-option>
+
+      <ion-select-option
+        *ngFor="let classify of threatClassify | keyvalue"
+        [value]="classify.key"
+      >
+        {{ classify.value }}
+      </ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <app-hazard-list *ngIf="viewMode" [classify]="classify"></app-hazard-list>
+  <app-hazard-list-map
+    *ngIf="!viewMode"
+    [classify]="classify"
+  ></app-hazard-list-map>
+
+  <!--
+  <ion-grid *ngIf="1 < 0">
+    <ion-row>
+      <ion-col size="12">
+        <h6 class="border-bottom text-center small text-secondary pb-2">
+          Sensor dan Bencana
+        </h6>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Hazard/101']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-floods-80.png"
+                [ngStyle]="{'width': '40px'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Banjir</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/102']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/landslide.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Tanah Longsor</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/108']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-earthquakes-80.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Gempa Bumi</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/109']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-tsunami-80.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Tsunami</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/105']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/wind.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Puting Beliung</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/106']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/drought.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Kekeringan</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/107']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/forest.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Karhutla</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/111']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-volcano-80.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Gunung Berapi</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/999']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/warning-sign.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Rambu</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Disaster/999']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/more.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Lainnya</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid *ngIf="1 < 0">
+    <ion-row>
+      <ion-col size="12">
+        <h6 class="border-bottom text-center small text-secondary pb-2">
+          Peran Aktif
+        </h6>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/Donate']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-donation-64.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Donasi</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/FoodKit']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/parcels.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Sembako Kit</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/FoodKit']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-man-avatar-64.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Relawan</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+
+      <ion-col size="4">
+        <div class="ratio ratio-4x3" [routerLink]="['/FoodKit']">
+          <div class="d-flex align-items-center justify-content-center">
+            <div>
+              <ion-img
+                src="/assets/disaster/icons8-research-60.png"
+                [ngStyle]="{'width': '40px', 'margin': 'auto'}"
+              ></ion-img>
+              <div class="mt-1 small text-center">Riset</div>
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  -->
+</ion-content>

@@ -1,0 +1,60 @@
+<ion-item
+  [routerLink]="['/Disaster', item.identifier, 'Currently', item.uuid]"
+  [lines]="last ? 'none' : 'full'"
+>
+  <ion-label class="ion-text-wrap">
+    <ion-text class="fw-bold mb-1 d-block">
+      {{ item.title }}
+    </ion-text>
+
+    <table class="table table-sm table-borderless small mb-0 text-muted">
+      <tbody>
+        <tr *ngIf="item.location_plain?.length > 0">
+          <td [ngStyle]="{ width: '25px' }">
+            <ion-icon
+              slot="start"
+              name="location-outline"
+              class="mt-1"
+            ></ion-icon>
+          </td>
+          <td>
+            {{
+              item.location_plain?.length > 0
+                ? item.location_plain?.join(", ")
+                : "-"
+            }}
+          </td>
+        </tr>
+
+        <tr *ngIf="item.source">
+          <td [ngStyle]="{ width: '25px' }">
+            <ion-icon
+              slot="start"
+              name="newspaper-outline"
+              class="mt-1"
+            ></ion-icon>
+          </td>
+          <td>{{ item.source }}</td>
+        </tr>
+
+        <tr>
+          <td [ngStyle]="{ width: '25px' }">
+            <ion-icon slot="start" name="time-outline" class="mt-1"></ion-icon>
+          </td>
+          <td>{{ item.occur_at | date: "medium" }}</td>
+        </tr>
+
+        <tr>
+          <td [ngStyle]="{ width: '25px' }">
+            <ion-icon
+              slot="start"
+              name="chatbox-outline"
+              class="mt-1"
+            ></ion-icon>
+          </td>
+          <td>{{ item.comment_count }} Komentar</td>
+        </tr>
+      </tbody>
+    </table>
+  </ion-label>
+</ion-item>

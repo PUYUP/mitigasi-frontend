@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="help-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">Donasi Kebencanaan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="alert alert-info rounded-0 small text-center">
+    Hanya digunakan untuk penanganan bencana seperti bantuan sembako, dll.
+  </div>
+
+  <div class="ion-padding">
+    <div class="text-center">
+      <h6 class="mb-0">Total Donasi Saat Ini</h6>
+      <h3 class="fw-bold mt-2 mb-4">Rp1.504.114.053</h3>
+
+      <button
+        class="
+          shadow-sm
+          btn btn-warning
+          d-flex
+          align-items-center
+          mx-auto
+          rounded-3
+        "
+        (click)="selectDonateAmount()"
+      >
+        <ion-icon name="cash" slot="start" class="me-2"></ion-icon>
+        <ion-text>Mulai Donasi</ion-text>
+      </button>
+    </div>
+  </div>
+
+  <app-donate-history></app-donate-history>
+</ion-content>

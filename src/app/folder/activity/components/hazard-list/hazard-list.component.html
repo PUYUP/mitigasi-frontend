@@ -1,0 +1,31 @@
+<ng-container *ngIf="hazard$ | async as hazard">
+  <div *ngIf="hazard?.status == 'loading'" class="ion-padding text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ion-list lines="full">
+    <ng-container *ngFor="let item of hazard?.data?.results">
+      <ion-item
+        detail="true"
+        [routerLink]="['/Threat', item.classify, item.uuid]"
+      >
+        <ion-label class="ion-text-wrap">
+          <strong>{{ item?.incident }}</strong>
+          <p class="small pt-2">{{ item.create_at | date: "medium" }}</p>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ion-infinite-scroll
+    [disabled]="!next"
+    threshold="100px"
+    (ionInfinite)="onLoadMore($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ng-container>

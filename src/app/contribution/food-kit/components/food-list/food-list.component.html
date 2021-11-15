@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" mode="ios">
+        <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+        Konfirmasi
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small"> Beras </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-divider>
+      <ion-label class="fw-bold"> Satuan dalam Kilogram </ion-label>
+    </ion-item-divider>
+
+    <ng-container *ngFor="let item of foods">
+      <ion-item>
+        <ion-avatar slot="start">
+          <img src="/assets/food/beras.jpg" />
+        </ion-avatar>
+
+        <ion-label class="ion-text-wrap">
+          <div class="row">
+            <div class="col-8">
+              <h3>{{ item.label }}</h3>
+            </div>
+
+            <div class="col-4">
+              <ion-button
+                *ngIf="!item.selected"
+                (click)="onSelect(item)"
+                expand="full"
+                size="small"
+              >
+                Pilih
+              </ion-button>
+
+              <input
+                *ngIf="item.selected"
+                type="number"
+                class="form-control form-control-sm w-100 text-center"
+                placeholder="Jumlah"
+                [(ngModel)]="item.amount"
+                (ngModelChange)="onAmountChange($event, item)"
+              />
+            </div>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+</ion-content>

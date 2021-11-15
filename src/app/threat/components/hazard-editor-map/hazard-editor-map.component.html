@@ -1,0 +1,41 @@
+<div class="d-flex align-items-stretch flex-column w-100 h-100">
+  <div
+    class="position-static latlng-input p-2 bg-light d-flex align-items-center"
+  >
+    <div>
+      <div class="row">
+        <div class="col-6 pe-1">
+          <ion-item lines="full">
+            <ion-input
+              placeholder="Latitude"
+              [(ngModel)]="inputLatitude"
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="col-6 ps-1">
+          <ion-item lines="full">
+            <ion-input
+              placeholder="Longitude"
+              [(ngModel)]="inputLongitude"
+            ></ion-input>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ion-buttons>
+        <ion-button type="button" (click)="reloadMapMarker()">
+          <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+
+        <ion-button type="button" (click)="initGeo()">
+          <ion-icon name="locate-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </div>
+
+  <div class="mapEl w-100 flex-grow-1" #mapEl></div>
+</div>

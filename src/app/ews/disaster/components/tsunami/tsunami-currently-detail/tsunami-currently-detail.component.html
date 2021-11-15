@@ -1,0 +1,48 @@
+<app-map [item]="item"></app-map>
+
+<div class="ion-padding">
+  <table class="table table-sm table-bordered mb-0">
+    <tbody>
+      <tr>
+        <td class="bg-light fw-bold">Kejadian</td>
+        <td>{{ item.title }}</td>
+      </tr>
+
+      <tr>
+        <td class="bg-light fw-bold">Wilayah</td>
+        <td>
+          {{
+            item.location_plain?.length > 0
+              ? item.location_plain?.join(", ")
+              : "-"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td class="bg-light fw-bold">Tanggal</td>
+        <td>{{ item.occur_at | date: "medium" }}</td>
+      </tr>
+
+      <tr>
+        <td class="bg-light fw-bold">Info dari</td>
+        <td>{{ item.source ? item.source : "&mdash;" }}</td>
+      </tr>
+
+      <tr>
+        <td class="bg-light fw-bold">Keterangan</td>
+        <td>{{ item.description ? item.description : "&mdash;" }}</td>
+      </tr>
+
+      <tr>
+        <td class="bg-light fw-bold">Penyebab</td>
+        <td>{{ item.reason ? item.reason : "&mdash;" }}</td>
+      </tr>
+
+      <tr>
+        <td class="bg-light fw-bold">Kronologis</td>
+        <td>{{ item.chronology ? item.chronology : "&mdash;" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

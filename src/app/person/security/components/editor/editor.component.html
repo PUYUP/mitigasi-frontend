@@ -1,0 +1,60 @@
+<ng-container *ngIf="userData$ | async as userData">
+  <ion-list lines="full">
+    <ion-item>
+      <ion-icon slot="start" name="person-outline"></ion-icon>
+      <ion-label position="stacked">Nama pengguna</ion-label>
+      <ion-input
+        [(ngModel)]="username"
+        placeholder="Mis: johndoe1234"
+        (change)="usernameChange($event)"
+      ></ion-input>
+
+      <ion-buttons
+        *ngIf="userData?.data?.user?.username != this.username"
+        slot="end"
+      >
+        <ion-button
+          type="button"
+          color="dark"
+          [disabled]="
+            userData?.data?.user?.username == this.username ||
+            userData?.status == 'loading' ||
+            securecodeStatus == 'loading'
+          "
+          (click)="securitySave('username')"
+        >
+          <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon slot="start" name="call-outline"></ion-icon>
+      <ion-label position="stacked">Nomor ponsel</ion-label>
+      <ion-input
+        [(ngModel)]="msisdn"
+        (change)="msisdnChange($event)"
+        placeholder="Mis: 08979614343"
+        type="tel"
+      ></ion-input>
+
+      <ion-buttons
+        slot="end"
+        *ngIf="userData?.data?.user?.msisdn != this.msisdn"
+      >
+        <ion-button
+          type="button"
+          [disabled]="
+            userData?.data?.user?.msisdn == this.msisdn ||
+            securecodeStatus == 'loading'
+          "
+          (click)="securitySave('msisdn')"
+        >
+          <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <app-change-password></app-change-password>
+</ng-container>

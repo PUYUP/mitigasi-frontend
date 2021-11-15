@@ -1,0 +1,34 @@
+<ng-container *ngIf="user$ | async as user">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <ion-list lines="full">
+      <ion-item>
+        <ion-icon slot="start" name="person-outline"></ion-icon>
+        <ion-label position="stacked">Nama lengkap</ion-label>
+        <ion-input
+          formControlName="first_name"
+          placeholder="Amirul Hanif"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+        <ion-label position="stacked">Tentang</ion-label>
+        <ion-textarea
+          formControlName="about"
+          autosize
+          placeholder="Seorang profesional"
+        ></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <ion-button
+      type="submit"
+      color="warning"
+      [disabled]="formGroup.invalid || user?.status == 'loading'"
+      expand="block"
+      class="ion-margin"
+    >
+      Simpan
+    </ion-button>
+  </form>
+</ng-container>

@@ -1,0 +1,30 @@
+- peringatan dini banjir hasil olah data dari sensor
+- Climate Early Warning System (ref: https://cews.bmkg.go.id/Diseminasi_Terkini/Moda_SMS.bmkg)
+- kontribusi/laporan warga
+- bencana saat ini
+- donasi (benda / uang)
+- relawan
+- riset, ajukan dana riset kebencanaan
+- peta bencana hasil dari riset
+- diskusi seperti forum
+- gempa terkini http://inatews.bmkg.go.id/?act=realtimeev
+- bencana terkini https://dibi.bnpb.go.id/xdibi
+- rambu bencana virtual (jadi ketika user lewat pada titik dimana rambu berada muncul notif di aplikasi)
+
+
+# django apps
+- person
+- fundraising
+- distibution
+- contribution
+- research
+- ews (early warning system)
+
+ns build android --bundle --env.snapshot --release --key-store-path mitigasi-release-key.keystore --key-store-password 561799 --key-store-alias mitigasi --key-store-alias-password 561799 --aab
+
+java -jar D:\PROGRAMS\NATIVESCRIPT\mitigasi\bundletool-all-1.8.1.jar build-apks --bundle=D:\PROGRAMS\NATIVESCRIPT\mitigasi\platforms\android\app\build\outputs\bundle\release\app-release.aab --output="mitigasi_app.apks" --ks=mitigasi-release-key.keystore --ks-pass=pass:561799 --ks-key-alias=mitigasi --key-pass=pass:561799
+
+ns build android --env.snapshot --release --key-store-path mitigasi-release-key.keystore --key-store-password 561799 --key-store-alias mitigasi --key-store-alias-password 561799 --copy-to mitigasi.apk
+
+KickStarter password
+tXXUDD$U$fX9mM6

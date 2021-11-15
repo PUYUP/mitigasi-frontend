@@ -1,0 +1,4 @@
+ng generate @ngrx/schematics:action threat/store/actions/hazard-map/hazard-map
+ng generate @ngrx/schematics:selector threat/store/selectors/hazard-map/hazard-map
+ng generate @ngrx/schematics:effect threat/store/effects/hazard-map/hazard-map
+ng generate @ngrx/schematics:reducer threat/store/reducers/hazard-map/hazard-map

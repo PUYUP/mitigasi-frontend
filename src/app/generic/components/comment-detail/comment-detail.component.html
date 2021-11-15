@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button> </ion-back-button>
+    </ion-buttons>
+
+    <ion-title size="small"> Detail Komentar </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="light">
+  <ng-container *ngIf="comment$ | async as comment">
+    <div *ngIf="comment?.status == 'loading'" class="text-center m-4">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <ion-card *ngIf="comment?.status == 'loaded'">
+      <ion-card-header>
+        <ion-card-subtitle class="d-flex w-100">
+          <ion-text class="fw-bold" color="dark">
+            {{ comment?.data?.result?.activity_author }}
+          </ion-text>
+          <ion-text class="ms-auto">
+            {{ comment?.data?.result?.create_at | date: "medium" }}
+          </ion-text>
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div [innerHTML]="comment?.data?.result?.description"></div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <app-comment-list
+    [content_type]="contentType"
+    [object_id]="objectId"
+    [parent]="commentUuid"
+  ></app-comment-list>
+</ion-content>

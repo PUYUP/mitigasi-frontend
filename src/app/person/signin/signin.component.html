@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <!--
+      <ion-button
+        mode="ios"
+        [routerLink]="['/Boarding']"
+        [queryParams]="{ challenge: 'validate_msisdn' }"
+      >
+        <ion-icon name="person-add" slot="start"></ion-icon>
+        <ion-text>Buat Akun</ion-text>
+      </ion-button>
+      -->
+
+      <ion-button mode="ios" [routerLink]="['/SignUp']">
+        <ion-icon name="person-add" slot="start"></ion-icon>
+        <ion-text>Buat Akun</ion-text>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small"> Login </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="user$ | async as user">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <ion-list lines="full">
+        <ion-item class="mb-2">
+          <ion-icon slot="start" name="call-outline"></ion-icon>
+          <ion-label position="stacked"
+            >Nama pengguna atau Nomor ponsel</ion-label
+          >
+          <ion-input
+            formControlName="username"
+            placeholder="Mis: bagus123 atau 085266769909"
+          ></ion-input>
+        </ion-item>
+
+        <p
+          class="small ion-padding-start ion-padding-end"
+          [ngStyle]="{ 'font-size': '12px' }"
+        >
+          <ion-text color="medium">
+            Login dengan nomor ponsel diperbolehkan setelah nomor telah
+            terverifikasi. Jika belum terverifikasi, gunakan nama pengguna.
+          </ion-text>
+        </p>
+
+        <ion-item>
+          <ion-icon slot="start" name="lock-open-outline"></ion-icon>
+          <ion-label position="stacked">Password</ion-label>
+          <ion-input
+            type="password"
+            formControlName="password"
+            placeholder="123456"
+          ></ion-input>
+
+          <ion-button
+            slot="end"
+            mode="ios"
+            size="small"
+            color="medium"
+            class="mt-4"
+            [routerLink]="['/Boarding']"
+            [queryParams]="{ challenge: 'password_recovery' }"
+          >
+            Lupa password?
+          </ion-button>
+        </ion-item>
+      </ion-list>
+
+      <ion-button
+        type="submit"
+        color="warning"
+        expand="block"
+        class="ion-margin"
+        [disabled]="formGroup.invalid || user?.status == 'loading'"
+      >
+        Submit
+      </ion-button>
+    </form>
+  </ng-container>
+</ion-content>

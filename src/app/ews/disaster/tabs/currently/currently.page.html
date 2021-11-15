@@ -1,0 +1,102 @@
+<ion-content>
+  <ng-container *ngIf="disaster$ | async as disaster">
+    <div
+      *ngIf="is_scrapping"
+      class="alert alert-info small text-center rounded-0 border-0 py-1 mb-0"
+    >
+      Memperbarui data...
+    </div>
+
+    <div
+      *ngIf="disaster?.status == 'loaded' && !is_scrapping && disaster?.data?.results?.length <= 0"
+      class="ion-padding text-center"
+    >
+      Belum ada data. Cek <strong>Info Warga</strong>
+    </div>
+
+    <div *ngIf="disaster?.status == 'loading'" class="ion-padding text-center">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+
+    <ion-list *ngIf="disaster?.data?.results?.length > 0" lines="full">
+      <ng-container
+        *ngFor="let item of disaster?.data?.results; let last = last"
+      >
+        <!-- FLOOD -->
+        <app-flood-currently
+          *ngIf="identifier == '101'"
+          [item]="item"
+          [last]="last"
+        ></app-flood-currently>
+
+        <!-- LANDSLIDE -->
+        <app-landslide-currently
+          *ngIf="identifier == '102'"
+          [item]="item"
+          [last]="last"
+        ></app-landslide-currently>
+
+        <!-- EARTHQUAKE -->
+        <app-earthquake-currently
+          *ngIf="identifier == '108'"
+          [item]="item"
+          [last]="last"
+        ></app-earthquake-currently>
+
+        <!-- TSUNAMI -->
+        <app-tsunami-currently
+          *ngIf="identifier == '109'"
+          [item]="item"
+          [last]="last"
+        ></app-tsunami-currently>
+
+        <!-- WIND -->
+        <app-wind-currently
+          *ngIf="identifier == '105'"
+          [item]="item"
+          [last]="last"
+        ></app-wind-currently>
+
+        <!-- VOLCANO -->
+        <app-volcano-currently
+          *ngIf="identifier == '111'"
+          [item]="item"
+          [last]="last"
+        ></app-volcano-currently>
+
+        <!-- WILDFIRE -->
+        <app-wildfire-currently
+          *ngIf="identifier == '107'"
+          [item]="item"
+          [last]="last"
+        ></app-wildfire-currently>
+
+        <!-- DROUGHT -->
+        <app-drought-currently
+          *ngIf="identifier == '106'"
+          [item]="item"
+          [last]="last"
+        ></app-drought-currently>
+
+        <!-- OTHER -->
+        <app-other-currently
+          *ngIf="identifier == '999'"
+          [item]="item"
+          [last]="last"
+        ></app-other-currently>
+      </ng-container>
+    </ion-list>
+
+    <ion-infinite-scroll
+      [disabled]="!next"
+      threshold="100px"
+      (ionInfinite)="onInfinite($event)"
+    >
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data..."
+      >
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-container>
+</ion-content>

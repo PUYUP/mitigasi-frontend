@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title size="small">
+      <ion-text *ngIf="challenge === 'validate_msisdn'"> Verifikasi </ion-text>
+
+      <ion-text *ngIf="challenge === 'password_recovery'">
+        Reset password
+      </ion-text>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <p *ngIf="challenge === 'password_recovery'">
+      Masukkan nomor ponsel yang digunakan saat mendaftar.
+    </p>
+
+    <p *ngIf="challenge === 'validate_msisdn'">
+      Masukkan nomor ponsel aktif. Kode keamanan akan dikirimkan.
+    </p>
+  </div>
+
+  <app-securecode-create [challenge]="challenge"></app-securecode-create>
+</ion-content>

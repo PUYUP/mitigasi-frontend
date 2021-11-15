@@ -1,0 +1,22 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <ng-container *ngIf="comment$ | async as comment">
+    <ion-item lines="full">
+      <ion-label position="stacked">Komentar Anda</ion-label>
+      <ion-textarea
+        formControlName="description"
+        autosize
+        placeholder="Isi komentar..."
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-button
+      type="submit"
+      expand="block"
+      class="ion-margin"
+      color="warning"
+      [disabled]="formGroup.invalid || comment?.status == 'creating'"
+    >
+      Kirim Komentar
+    </ion-button>
+  </ng-container>
+</form>

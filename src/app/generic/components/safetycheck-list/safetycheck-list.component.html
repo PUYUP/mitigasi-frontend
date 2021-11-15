@@ -1,0 +1,104 @@
+<ng-container *ngIf="safetycheck$ | async as safetycheck">
+  <div *ngIf="safetycheck?.status == 'loading'" class="text-center m-4">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ion-list
+    *ngIf="
+      safetycheck?.status == 'loaded' && safetycheck?.data?.results?.length > 0
+    "
+    lines="full"
+  >
+    <ng-container
+      *ngFor="let item of safetycheck?.data?.results; let last = last"
+    >
+      <ion-item [lines]="last ? 'none' : 'full'">
+        <ion-icon
+          *ngIf="item.condition == 'affected'"
+          name="sad-outline"
+          slot="start"
+          color="danger"
+        ></ion-icon>
+
+        <ion-icon
+          *ngIf="item.condition == 'safe'"
+          name="happy-outline"
+          slot="start"
+          color="success"
+        ></ion-icon>
+
+        <ion-label class="ion-text-wrap">
+          <div class="d-flex">
+            {{ item.activity_author }}
+            <ion-text class="ms-auto small" color="medium">
+              {{ item.create_at | date: "medium" }}
+            </ion-text>
+          </div>
+
+          <p *ngIf="item.condition == 'affected'">
+            {{ item.situation ? item.situation : "Tidak ada keterangan" }}
+          </p>
+
+          <div
+            *ngIf="item?.attachments?.length > 0"
+            class="mt-2 position-relative"
+          >
+            <ng-container *ngIf="item?.attachments?.length == 1">
+              <div class="ratio ratio-4x3">
+                <div>
+                  <ion-img
+                    [src]="item?.attachments[0].file"
+                    class="full-image"
+                  ></ion-img>
+                </div>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="item?.attachments?.length > 1">
+              <div class="row g-2">
+                <div *ngFor="let attachment of item?.attachments" class="col-4">
+                  <div class="ratio ratio-1x1">
+                    <div
+                      (click)="
+                        openAttachmentImageViewer(item?.attachments, attachment)
+                      "
+                    >
+                      <ion-img
+                        [src]="attachment.file"
+                        class="full-image"
+                      ></ion-img>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <div *ngIf="item?.authored" class="text-end pt-2">
+            <ion-button fill="clear" (click)="openDelete(item)" color="danger">
+              <ion-icon name="trash-outline" slot="start"></ion-icon>
+              <ion-text>Hapus</ion-text>
+            </ion-button>
+
+            <ion-button fill="clear" (click)="openEditor(item)">
+              <ion-icon name="create-outline" slot="start"></ion-icon>
+              <ion-text>Edit</ion-text>
+            </ion-button>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ion-infinite-scroll
+    [disabled]="!next"
+    threshold="100px"
+    (ionInfinite)="onInfinite($event)"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ng-container>

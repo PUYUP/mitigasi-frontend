@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">
+      {{ parent ? "Balas" : item?.uuid ? "Update" : "Kirim" }}
+      Komentar
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <ion-item lines="full">
+      <ion-textarea
+        autosize
+        rows="2"
+        formControlName="description"
+        placeholder="Tulis komentar..."
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" class="ion-margin" color="warning">
+      Kirim
+    </ion-button>
+  </form>
+</ion-content>

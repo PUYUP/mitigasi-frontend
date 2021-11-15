@@ -1,0 +1,22 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <ng-container *ngIf="securecode$ | async as securecode">
+    <ion-item lines="full">
+      <ion-icon slot="start" name="call-outline"></ion-icon>
+      <ion-label position="stacked">Nomor Ponsel</ion-label>
+      <ion-input
+        formControlName="issuer"
+        placeholder="Mis: 085266769909"
+      ></ion-input>
+    </ion-item>
+
+    <ion-button
+      type="submit"
+      expand="block"
+      color="warning"
+      [disabled]="formGroup.invalid || securecode?.status == 'loading'"
+      class="ion-margin"
+    >
+      Submit
+    </ion-button>
+  </ng-container>
+</form>

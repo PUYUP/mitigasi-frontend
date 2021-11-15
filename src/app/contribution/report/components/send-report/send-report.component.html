@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">Info {{ identifier_label }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <ion-list lines="full">
+      <ion-item>
+        <ion-icon slot="start" name="flag-outline"></ion-icon>
+        <ion-label position="stacked">Nama Kejadian *</ion-label>
+        <ion-textarea
+          autosize
+          formControlName="title"
+          rows="1"
+          placeholder="{{ identifier_label }} di Paal Merah"
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon slot="start" name="reader-outline"></ion-icon>
+        <ion-label position="stacked">Keterangan</ion-label>
+        <ion-textarea
+          autosize
+          formControlName="description"
+          rows="1"
+          placeholder="Jelaskan lebih rinci"
+        ></ion-textarea>
+      </ion-item>
+
+      <!--
+      <ion-item>
+        <ion-icon slot="start" name="thunderstorm-outline"></ion-icon>
+        <ion-label position="stacked">Penyebab</ion-label>
+        <ion-textarea
+          autosize
+          formControlName="reason"
+          rows="1"
+          placeholder="Jika ada, mohon jelaskan penyebabnya"
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon slot="start" name="reorder-four-outline"></ion-icon>
+        <ion-label position="stacked">Kronologis</ion-label>
+        <ion-textarea
+          autosize
+          formControlName="chronology"
+          rows="1"
+          placeholder="Pada jam 3 subuh terdengar gemuruh"
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <ion-icon slot="start" name="accessibility-outline"></ion-icon>
+        <ion-label position="stacked">Kebutuhan Warga Terdampak</ion-label>
+        <ion-textarea
+          autosize
+          formControlName="necessary"
+          rows="1"
+          placeholder="Seperti sembako, obat-obatan, dll"
+        ></ion-textarea>
+      </ion-item>
+      -->
+    </ion-list>
+
+    <div class="ion-margin mt-auto pb-3 pt-3">
+      <p class="small">
+        Anda menyatakan informasi ini benar adanya. STOP menyebar HOAX.
+      </p>
+
+      <ion-button
+        type="submit"
+        class="ion-margin-top"
+        color="warning"
+        expand="block"
+        [disabled]="formGroup.invalid"
+      >
+        {{ item ? "Perbarui" : "Kirim" }} Info
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

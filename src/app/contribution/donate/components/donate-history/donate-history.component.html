@@ -1,0 +1,14 @@
+<ion-list lines="full">
+  <ion-item-divider>
+    <ion-label>Riwayat Donasi Saya</ion-label>
+  </ion-item-divider>
+
+  <ng-container *ngFor="let item of histories">
+    <ion-item [routerLink]="['/Donate/DonateDetail']" detail>
+      <ion-label class="fw-bold">Rp {{ item.amount | number }}</ion-label>
+      <ion-note slot="end">
+        {{ item.used ? "Tergunakan" : "Belum Digunakan" }}
+      </ion-note>
+    </ion-item>
+  </ng-container>
+</ion-list>

@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
+    <ion-title size="small">Aktifitas</ion-title>
+  </ion-toolbar>
+
+  <ion-segment
+    (ionChange)="segmentChanged($event)"
+    [(ngModel)]="segmentSelected"
+    class="p-1"
+  >
+    <ion-segment-button value="hazard" layout="icon-hide" mode="ios">
+      <ion-label>Kiriman Info</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="safetycheck" layout="icon-hide" mode="ios">
+      <ion-label>Terdampak</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-header>
+
+<ion-content>
+  <app-hazard-list
+    *ngIf="segmentSelected == 'hazard'"
+    [user]="user"
+  ></app-hazard-list>
+
+  <app-safetycheck-list
+    *ngIf="segmentSelected == 'safetycheck'"
+  ></app-safetycheck-list>
+</ion-content>

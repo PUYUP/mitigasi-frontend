@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // endpoint: 'http://10.0.2.2:8000/api/',
+  endpoint: 'http://localhost:8000/api/',
+  // endpoint: 'https://mitigasi.cliexec.com/api/',
 };
 
 /*

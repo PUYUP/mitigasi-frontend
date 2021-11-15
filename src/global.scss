@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,3 +24,93 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~bootstrap/dist/css/bootstrap-grid.min.css";
+@import "~bootstrap/dist/css/bootstrap-utilities.min.css";
+
+/* Leaflet */
+@import "~leaflet/dist/leaflet.css";
+
+/* Swiper */
+@import "~swiper/css";
+@import "~swiper/css/bundle";
+
+.ion-page {
+  max-width: 850px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ion-padding-xs {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 8px;
+}
+
+table {
+  font-size: 14px;
+}
+
+ion-title {
+  line-height: 1.3;
+}
+
+ion-card-title {
+  font-size: 15px;
+}
+
+ion-card-subtitle {
+  font-size: 11px;
+}
+
+ion-item {
+  font-size: 15px;
+}
+
+ion-button {
+  font-size: 12px !important;
+}
+
+ion-badge {
+  font-size: 11px;
+}
+
+.ion-item-no-padding {
+  --inner-padding-end: 0;
+}
+
+.full-image {
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -o-object-fit: cover;
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  font-size: 13px;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-size: 13px;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  font-size: 13px;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-size: 13px;
+}
+
+.swiper-slide {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
