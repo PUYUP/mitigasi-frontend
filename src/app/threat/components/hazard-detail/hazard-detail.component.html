@@ -54,6 +54,22 @@
           >
             <!-- content goes here -->
           </ion-card-title>
+
+          <p
+            *ngIf="item.data?.result?.classify == '105'"
+            class="pt-2 text-danger"
+          >
+            <span>
+              <ion-icon name="pulse-outline" slot="start"></ion-icon>
+              <ion-text class="ms-1">
+                Magnitude: {{ item.data?.result?.disaster?.magnitude }} sr,
+              </ion-text>
+
+              <ion-text class="ms-1">
+                Kedalaman: {{ item.data?.result?.disaster?.depth }} km
+              </ion-text>
+            </span>
+          </p>
         </ion-card-header>
 
         <ion-card-content>

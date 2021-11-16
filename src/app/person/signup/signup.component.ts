@@ -53,8 +53,6 @@ export class SignupComponent implements OnInit {
   onSubmit(): void {
     const data = {
       ...this.formGroup.value,
-      username: this.issuer,
-      msisdn: this.issuer,
       validation: {
         passcode: this.passcode,
         token: this.token,

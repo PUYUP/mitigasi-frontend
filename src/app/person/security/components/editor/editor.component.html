@@ -30,7 +30,21 @@
 
     <ion-item>
       <ion-icon slot="start" name="call-outline"></ion-icon>
-      <ion-label position="stacked">Nomor ponsel</ion-label>
+      <ion-label position="stacked">
+        Ponsel
+        <ion-text
+          *ngIf="msisdn"
+          class="ms-2"
+          [color]="
+            userData?.data?.user?.is_msisdn_verified ? 'success' : 'danger'
+          "
+        >
+          {{
+            userData?.data?.user?.is_msisdn_verified ? "verified" : "unverified"
+          }}
+        </ion-text>
+      </ion-label>
+
       <ion-input
         [(ngModel)]="msisdn"
         (change)="msisdnChange($event)"
@@ -38,11 +52,13 @@
         type="tel"
       ></ion-input>
 
-      <ion-buttons
-        slot="end"
-        *ngIf="userData?.data?.user?.msisdn != this.msisdn"
-      >
+      <ng-container *ngIf="msisdn">
         <ion-button
+          *ngIf="
+            userData?.data?.user?.is_msisdn_verified &&
+            userData?.data?.user?.msisdn != this.msisdn
+          "
+          slot="end"
           type="button"
           [disabled]="
             userData?.data?.user?.msisdn == this.msisdn ||
@@ -50,9 +66,20 @@
           "
           (click)="securitySave('msisdn')"
         >
-          <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
+          Save
         </ion-button>
-      </ion-buttons>
+
+        <ion-button
+          *ngIf="!userData?.data?.user?.is_msisdn_verified"
+          slot="end"
+          type="button"
+          size="small"
+          [disabled]="securecodeStatus == 'loading'"
+          (click)="securitySave('msisdn')"
+        >
+          Verify
+        </ion-button>
+      </ng-container>
     </ion-item>
   </ion-list>
 
