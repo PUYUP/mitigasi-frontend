@@ -19,12 +19,10 @@ import { ThreatClassify } from 'src/app/threat/threat.classify';
 })
 export class HomePage implements OnInit {
   @ViewChild(HazardListComponent) hazardList: HazardListComponent;
-  @ViewChild(HazardListMapComponent) hazardListMap: HazardListMapComponent;
 
   user$: Observable<any>;
   threatClassify: any;
   classify: string = '';
-  viewMode: boolean = true; // true = list, false = map
 
   constructor(
     private store: Store<AppState>,
@@ -45,6 +43,18 @@ export class HomePage implements OnInit {
     await dialog.present();
   }
 
+  async _showHazardMap() {
+    const dialog = await this.modalCtrl.create({
+      component: HazardListMapComponent,
+      backdropDismiss: false,
+      componentProps: {
+        classify: this.classify,
+      },
+    });
+
+    await dialog.present();
+  }
+
   ngOnInit() {
     this.threatClassify = ThreatClassify;
   }
@@ -57,19 +67,16 @@ export class HomePage implements OnInit {
     }
   }
 
+  showHazardMap() {
+    this._showHazardMap();
+  }
+
   doRefresh(event: any) {
     if (this.hazardList) this.hazardList.onRefresh(event, this.classify);
-    if (this.hazardListMap) this.hazardListMap.onRefresh(event, this.classify);
   }
 
   onClassifyChange(event: any) {
     this.classify = event.detail.value;
-
     if (this.hazardList) this.hazardList.onRefresh(null, this.classify);
-    if (this.hazardListMap) this.hazardListMap.onRefresh(null, this.classify);
-  }
-
-  displayMode() {
-    this.viewMode = !this.viewMode;
   }
 }

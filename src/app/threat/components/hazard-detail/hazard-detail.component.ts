@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, ModalController } from '@ionic/angular';
 import { ActionsSubject, select, Store } from '@ngrx/store';
@@ -47,7 +47,8 @@ export class HazardDetailComponent implements OnInit {
     public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController,
     private actionListener$: ActionsSubject,
-    private location: Location
+    private location: Location,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.hazard$ = this.store.pipe(select(selectHazard({})));
     this.safetycheck$ = this.store.pipe(select(selectSafetyChecks));
@@ -56,6 +57,8 @@ export class HazardDetailComponent implements OnInit {
       .subscribe((state: any) => {
         if (state?.data?.results?.length > 0) {
           this.showMapButton = true;
+        } else {
+          this.showMapButton = false;
         }
       });
   }
@@ -177,6 +180,10 @@ export class HazardDetailComponent implements OnInit {
             this.router.navigate(['/Home']);
           }
         }
+
+        if (action.type == '[SafetyCheck] Delete SafetyCheck Success') {
+          this.changeDetectorRef.detectChanges();
+        }
       });
   }
 
@@ -231,5 +238,6 @@ export class HazardDetailComponent implements OnInit {
   ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+    this.changeDetectorRef.detach();
   }
 }

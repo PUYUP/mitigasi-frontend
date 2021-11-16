@@ -8,7 +8,7 @@ On Windows, the file might be called gradlew.bat instead.
 ./apksigner verify D:\PROGRAMS\IONIC\mitigasi\platforms\android\app\build\outputs\apk\release\app-release.apk
 
 ./zipalign -v 4 D:\PROGRAMS\IONIC\mitigasi\platforms\android\app\build\outputs\bundle\release\app-release.aab D:\PROGRAMS\IONIC\mitigasi\platforms\android\app\build\outputs\bundle\release\app-release-uploaded.aab
-./apksigner sign --min-sdk-version 21 --ks D:\PROGRAMS\IONIC\mitigasi\mitigasi.keystore D:\PROGRAMS\IONIC\mitigasi\platforms\android\app\build\outputs\bundle\release\app-release.aab
+./apksigner sign --min-sdk-version 21 --ks D:\PROGRAMS\IONIC\mitigasi\mitigasi.keystore D:\PROGRAMS\IONIC\mitigasi\platforms\android\app\build\outputs\bundle\release\app-release-uploaded.aab
 ./apksigner verify D:\PROGRAMS\IONIC\mitigasi\platforms\android\app\build\outputs\bundle\release\app-release-uploaded.aab
 
 java -jar bundletool.jar build-apks --bundle=D:\PROGRAMS\IONIC\mitigasi\platforms\android\app\build\outputs\bundle\release\app-release.aab --output=out_bundle_archive_set.apks

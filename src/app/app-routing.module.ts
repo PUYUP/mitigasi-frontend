@@ -39,43 +39,6 @@ const routes: Routes = [
       ),
   },
 
-  // CONTRIBUTION
-  {
-    path: 'FoodKit',
-    loadChildren: () =>
-      import('./contribution/food-kit/food-kit.module').then(
-        (m) => m.FoodKitPageModule
-      ),
-  },
-  {
-    path: 'Donate',
-    loadChildren: () =>
-      import('./contribution/donate/donate.module').then(
-        (m) => m.DonatePageModule
-      ),
-  },
-  {
-    path: 'Disaster',
-    loadChildren: () =>
-      import('./ews/disaster/disaster.module').then(
-        (m) => m.DisasterPageModule
-      ),
-  },
-  {
-    path: 'Disaster',
-    loadChildren: () =>
-      import('./contribution/report/report.module').then(
-        (m) => m.ReportPageModule
-      ),
-  },
-  {
-    path: 'Comment',
-    loadChildren: () =>
-      import('./contribution/comment/comment.module').then(
-        (m) => m.CommentPageModule
-      ),
-  },
-
   // PERSON
   {
     path: 'SignIn',
@@ -132,6 +95,17 @@ const routes: Routes = [
     path: 'Sensor',
     loadChildren: () =>
       import('./sensor/sensor.module').then((m) => m.SensorPageModule),
+  },
+
+  {
+    path: 'FoodKit',
+    loadChildren: () =>
+      import('./food-kit/food-kit.module').then((m) => m.FoodKitPageModule),
+  },
+  {
+    path: 'Donate',
+    loadChildren: () =>
+      import('./donate/donate.module').then((m) => m.DonatePageModule),
   },
 ];
 

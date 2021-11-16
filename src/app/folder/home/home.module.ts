@@ -11,10 +11,10 @@ import { HazardListComponent } from 'src/app/threat/components/hazard-list/hazar
 import { HazardEditorComponent } from 'src/app/threat/components/hazard-editor/hazard-editor.component';
 import { SwiperModule } from 'swiper/angular';
 import { AutosizeModule } from 'ngx-autosize';
-import { HazardEditorMapComponent } from 'src/app/threat/components/hazard-editor-map/hazard-editor-map.component';
 import { HazardListMapComponent } from 'src/app/threat/components/hazard-list-map/hazard-list-map.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -26,18 +26,17 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
     SwiperModule,
     AutosizeModule,
     FileUploadModule,
+    SharedModule,
   ],
   declarations: [
     HomePage,
     HazardListComponent,
     HazardEditorComponent,
-    HazardEditorMapComponent,
     HazardListMapComponent,
   ],
   entryComponents: [
     HazardListComponent,
     HazardEditorComponent,
-    HazardEditorMapComponent,
     HazardListMapComponent,
   ],
   providers: [AndroidPermissions],

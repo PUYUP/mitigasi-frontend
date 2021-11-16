@@ -2,9 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { createComment } from 'src/app/contribution/store/actions/comment/comment.actions';
 import { AppState } from 'src/app/store/reducers';
-import { updateComment } from '../../store/actions/comment/comment.actions';
+import {
+  createComment,
+  updateComment,
+} from '../../store/actions/comment/comment.actions';
 
 @Component({
   selector: 'app-comment-editor',

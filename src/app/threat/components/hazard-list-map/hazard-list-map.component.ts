@@ -6,7 +6,8 @@ import { loadHazardMaps } from '../../store/actions/hazard-map/hazard-map.action
 import { selectHazardMaps } from '../../store/selectors/hazard-map/hazard-map.selectors';
 import * as L from 'leaflet';
 import { takeUntil } from 'rxjs/operators';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
+import { ThreatClassify } from '../../threat.classify';
 
 const iconRetinaUrl = 'assets/map/marker-icon-2x.png';
 const iconUrl = 'assets/map/marker-icon.png';
@@ -36,6 +37,7 @@ export class HazardListMapComponent implements OnInit {
   marker: any;
   markers: any = [];
   coords: any = [];
+  threatClassify: any;
 
   coordinate$: Observable<any>;
   onDestroy$ = new Subject<void>();
@@ -45,18 +47,13 @@ export class HazardListMapComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController
   ) {
     this.coordinate$ = this.store.pipe(select(selectHazardMaps));
     this.coordinate$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(async (state: any) => {
-        if (state?.status == 'loading') {
-          this._presentLoading();
-        } else {
-          if (await this.loadingCtrl.getTop()) await this.loadingCtrl.dismiss();
-        }
-
         if (state?.status == 'loaded') {
           if (this.markers?.length > 0) {
             for (let index in this.markers) {
@@ -96,6 +93,8 @@ export class HazardListMapComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.threatClassify = ThreatClassify;
+
     this.store.dispatch(loadHazardMaps({ classify: this.classify }));
 
     setTimeout(() => {
@@ -127,6 +126,15 @@ export class HazardListMapComponent implements OnInit {
 
     // draw map
     tiles.addTo(this.map);
+  }
+
+  onClassifyChange(event: any) {
+    this.classify = event.detail.value;
+    this.store.dispatch(loadHazardMaps({ classify: this.classify }));
+  }
+
+  dismiss() {
+    this.modalCtrl.dismiss();
   }
 
   ngOnDestroy(): void {

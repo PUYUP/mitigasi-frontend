@@ -80,12 +80,6 @@ export class SafetyCheckListMapComponent implements OnInit {
     this.coordinate$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(async (state: any) => {
-        if (state?.status == 'loading') {
-          this._presentLoading();
-        } else {
-          if (await this.loadingCtrl.getTop()) await this.loadingCtrl.dismiss();
-        }
-
         if (state?.status == 'loaded') {
           if (this.markers?.length > 0) {
             for (let index in this.markers) {

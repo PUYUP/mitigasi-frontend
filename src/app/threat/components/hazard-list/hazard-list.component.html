@@ -39,7 +39,10 @@
             <div class="ratio ratio-4x3">
               <div
                 (click)="
-                  openAttachmentImageViewer(item?.attachments, attachment)
+                  openAttachmentImageViewer(
+                    item?.attachments,
+                    item?.attachments[0]
+                  )
                 "
               >
                 <ion-img

@@ -1,16 +1,4 @@
 import { ActionReducerMap } from '@ngrx/store';
-//import {
-//  CommentReducer,
-//  CommentState,
-//} from '../contribution/store/reducers/comment/comment.reducer';
-import {
-  ReportReducer,
-  ReportState,
-} from '../contribution/store/reducers/report/report.reducer';
-import {
-  DisasterReducer,
-  DisasterState,
-} from '../ews/store/reducers/disaster/disaster.reducer';
 import {
   PersonPasswordReducer,
   PersonPasswordState,
@@ -54,9 +42,6 @@ export interface AppState {
   person_user: PersonUserState;
   person_password: PersonPasswordState;
 
-  disaster: DisasterState;
-  report: ReportState;
-  // comment: CommentState;
   hazard: HazardState;
   hazard_map: HazardMapState;
 
@@ -73,9 +58,6 @@ export const AppReducers: ActionReducerMap<AppState> = {
   person_user: PersonUserReducer,
   person_password: PersonPasswordReducer,
 
-  disaster: DisasterReducer,
-  report: ReportReducer,
-  // comment: CommentReducer,
   hazard: HazardReducer,
   hazard_map: HazardMapReducer,
 

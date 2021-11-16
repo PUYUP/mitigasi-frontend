@@ -143,7 +143,7 @@ export class SafetyCheckEffects {
     () =>
       this.actions$.pipe(
         ofType(deleteSafetyCheckSuccess),
-        tap((response: any) => {
+        tap(async (response: any) => {
           let content_object = response?.data?.content_object;
           let content_objectData = { ...content_object };
 

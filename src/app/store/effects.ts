@@ -1,6 +1,3 @@
-// import { CommentEffects } from '../contribution/store/effects/comment/comment.effects';
-import { ReportEffects } from '../contribution/store/effects/report/report.effects';
-import { DisasterEffects } from '../ews/store/effects/disaster/disaster.effects';
 import { PersonPasswordEffects } from '../person/store/effects/password/password.effects';
 import { PersonSecurecodeEffects } from '../person/store/effects/securecode/securecode.effects';
 import { PersonUserEffects } from '../person/store/effects/user/user.effects';
@@ -15,9 +12,6 @@ export const AppEffects = [
   PersonSecurecodeEffects,
   PersonUserEffects,
   PersonPasswordEffects,
-  DisasterEffects,
-  ReportEffects,
-  // CommentEffects,
   HazardEffects,
   HazardMapEffects,
   CommentEffects,

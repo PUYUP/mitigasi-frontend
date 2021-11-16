@@ -1,14 +1,33 @@
-<div
-  class="
-    d-flex
-    align-items-stretch
-    position-absolute
-    ratio
-    start-0
-    end-0
-    bottom-0
-  "
-  [ngStyle]="{ top: '136px' }"
->
-  <div class="mapEl" #mapEl></div>
-</div>
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">Peta</ion-title>
+
+    <ion-select
+      placeholder="Pilih Info"
+      interface="action-sheet"
+      (ionChange)="onClassifyChange($event)"
+      [value]="classify"
+      slot="end"
+      class="ion-margin-end"
+    >
+      <ion-select-option value=""> Semua </ion-select-option>
+
+      <ion-select-option
+        *ngFor="let classify of threatClassify | keyvalue"
+        [value]="classify.key"
+      >
+        {{ classify.value }}
+      </ion-select-option>
+    </ion-select>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="mapEl h-100" #mapEl></div>
+</ion-content>

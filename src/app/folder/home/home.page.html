@@ -89,14 +89,10 @@
 
   <ion-item lines="full" color="light">
     <ion-buttons slot="end">
-      <ion-button size="small" (click)="displayMode()">
-        <ion-icon
-          slot="start"
-          [name]="viewMode ? 'map-outline' : 'reader-outline'"
-          size="small"
-        ></ion-icon>
+      <ion-button size="small" (click)="showHazardMap()">
+        <ion-icon slot="start" name="map-outline" size="small"></ion-icon>
 
-        {{ viewMode ? 'Peta' : 'List' }}
+        <ion-text>Peta</ion-text>
       </ion-button>
     </ion-buttons>
 
@@ -117,11 +113,7 @@
     </ion-select>
   </ion-item>
 
-  <app-hazard-list *ngIf="viewMode" [classify]="classify"></app-hazard-list>
-  <app-hazard-list-map
-    *ngIf="!viewMode"
-    [classify]="classify"
-  ></app-hazard-list-map>
+  <app-hazard-list [classify]="classify"></app-hazard-list>
 
   <!--
   <ion-grid *ngIf="1 < 0">

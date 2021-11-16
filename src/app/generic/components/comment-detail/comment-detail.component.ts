@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectComments } from 'src/app/contribution/store/selectors/comment/comment.selectors';
 import { AppState } from 'src/app/store/reducers';
 import {
   loadComment,

@@ -7,12 +7,14 @@ import { SecurecodeValidationComponent } from './securecode-validation/securecod
 import { SecurecodeCreateComponent } from './securecode-create/securecode-create.component';
 import { SecurecodeValidationDialogComponent } from './securecode-validation-dialog/securecode-validation-dialog.component';
 import { IonicModule } from '@ionic/angular';
+import { HazardEditorMapComponent } from '../threat/components/hazard-editor-map/hazard-editor-map.component';
 
 @NgModule({
   declarations: [
     SecurecodeValidationComponent,
     SecurecodeCreateComponent,
     SecurecodeValidationDialogComponent,
+    HazardEditorMapComponent,
   ],
   imports: [
     IonicModule,
@@ -25,6 +27,8 @@ import { IonicModule } from '@ionic/angular';
     SecurecodeValidationComponent,
     SecurecodeValidationDialogComponent,
     SecurecodeCreateComponent,
+    HazardEditorMapComponent,
   ],
+  entryComponents: [HazardEditorMapComponent],
 })
 export class SharedModule {}
