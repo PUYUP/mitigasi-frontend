@@ -8,6 +8,8 @@ import { SecurecodeCreateComponent } from './securecode-create/securecode-create
 import { SecurecodeValidationDialogComponent } from './securecode-validation-dialog/securecode-validation-dialog.component';
 import { IonicModule } from '@ionic/angular';
 import { HazardEditorMapComponent } from '../threat/components/hazard-editor-map/hazard-editor-map.component';
+import { CommentEditorComponent } from '../generic/components/comment-editor/comment-editor.component';
+import { AutosizeModule } from 'ngx-autosize';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,7 @@ import { HazardEditorMapComponent } from '../threat/components/hazard-editor-map
     SecurecodeCreateComponent,
     SecurecodeValidationDialogComponent,
     HazardEditorMapComponent,
+    CommentEditorComponent,
   ],
   imports: [
     IonicModule,
@@ -22,13 +25,15 @@ import { HazardEditorMapComponent } from '../threat/components/hazard-editor-map
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    AutosizeModule,
   ],
   exports: [
     SecurecodeValidationComponent,
     SecurecodeValidationDialogComponent,
     SecurecodeCreateComponent,
     HazardEditorMapComponent,
+    CommentEditorComponent,
   ],
-  entryComponents: [HazardEditorMapComponent],
+  entryComponents: [HazardEditorMapComponent, CommentEditorComponent],
 })
 export class SharedModule {}

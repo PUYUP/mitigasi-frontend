@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { CommentListComponent } from '../generic/components/comment-list/comment-list.component';
 import { HazardDetailComponent } from './components/hazard-detail/hazard-detail.component';
 
 import { ThreatPage } from './threat.page';
@@ -17,7 +18,16 @@ const routes: Routes = [
           },
           {
             path: ':hazard_uuid',
-            component: HazardDetailComponent,
+            children: [
+              {
+                path: '',
+                component: HazardDetailComponent,
+              },
+              {
+                path: 'Comment',
+                component: CommentListComponent,
+              },
+            ],
           },
         ],
       },

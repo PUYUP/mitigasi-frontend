@@ -51,7 +51,7 @@ export const deleteHazardFailure = createAction(
 // LISTS
 export const loadHazards = createAction(
   '[Hazard] Load Hazards',
-  props<{ classify?: string; user?: string }>()
+  props<{ classify?: string; user_id?: string }>()
 );
 
 export const loadHazardsSuccess = createAction(
@@ -61,7 +61,7 @@ export const loadHazardsSuccess = createAction(
 
 export const loadMoreHazards = createAction(
   '[Hazard] Load More Hazards',
-  props<{ next: string; classify?: string; user?: string }>()
+  props<{ next: string; classify?: string; user_id?: string }>()
 );
 
 export const loadMoreHazardsSuccess = createAction(
@@ -108,3 +108,9 @@ export const scrapeHazardsFailure = createAction(
 
 // RESET
 export const resetHazard = createAction('[Hazard] Reset Hazard');
+
+// INSTANT UPDATE
+export const instantUpdateHazard = createAction(
+  '[Hazard] Instant Update Hazard',
+  props<{ data: any }>()
+);

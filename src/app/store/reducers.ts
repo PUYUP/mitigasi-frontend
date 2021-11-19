@@ -35,6 +35,10 @@ import {
   ActivitySafetyCheckReducer,
   ActivitySafetyCheckState,
 } from '../folder/activity/store/reducers/safetycheck/safetycheck.reducer';
+import {
+  ActivityCommentReducer,
+  ActivityCommentState,
+} from '../folder/activity/store/reducers/comment/comment.reducer';
 
 // STATE
 export interface AppState {
@@ -50,6 +54,7 @@ export interface AppState {
   safetycheck_map: SafetyCheckMapState;
 
   activity_safetycheck: ActivitySafetyCheckState;
+  activity_comment: ActivityCommentState;
 }
 
 // REDUCERS
@@ -66,4 +71,5 @@ export const AppReducers: ActionReducerMap<AppState> = {
   safetycheck_map: SafetyCheckMapReducer,
 
   activity_safetycheck: ActivitySafetyCheckReducer,
+  activity_comment: ActivityCommentReducer,
 };

@@ -4,25 +4,25 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
-import { SafetyCheckService } from 'src/app/generic/services/safetycheck/safetycheck.service';
+import { CommentService } from 'src/app/generic/services/comment/comment.service';
 import { AppState } from 'src/app/store/reducers';
 import { updateHazardSuccess } from 'src/app/threat/store/actions/hazard/hazard.actions';
 import {
-  deleteActivitySafetyCheck,
-  deleteActivitySafetyCheckFailure,
-  deleteActivitySafetyCheckSuccess,
-  loadActivitySafetyChecks,
-  loadActivitySafetyChecksFailure,
-  loadActivitySafetyChecksSuccess,
-  loadMoreActivitySafetyChecks,
-  loadMoreActivitySafetyChecksSuccess,
-} from '../../actions/safetycheck/safetycheck.actions';
+  deleteActivityComment,
+  deleteActivityCommentFailure,
+  deleteActivityCommentSuccess,
+  loadActivityComments,
+  loadActivityCommentsFailure,
+  loadActivityCommentsSuccess,
+  loadMoreActivityComments,
+  loadMoreActivityCommentsSuccess,
+} from '../../actions/comment/comment.actions';
 
 @Injectable()
-export class ActivitySafetyCheckEffects {
+export class ActivityCommentEffects {
   constructor(
     private actions$: Actions,
-    private safetycheckService: SafetyCheckService,
+    private commentService: CommentService,
     private modalCtrl: ModalController,
     private store: Store<AppState>
   ) {}
@@ -30,16 +30,16 @@ export class ActivitySafetyCheckEffects {
   // DELETE
   delete$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(deleteActivitySafetyCheck),
+      ofType(deleteActivityComment),
       mergeMap((payload) => {
-        return this.safetycheckService.delete(payload.uuid).pipe(
+        return this.commentService.delete(payload.uuid).pipe(
           map((response) => {
-            return deleteActivitySafetyCheckSuccess({
+            return deleteActivityCommentSuccess({
               data: { ...response },
             });
           }),
           catchError((error) => {
-            return of(deleteActivitySafetyCheckFailure({ error: error }));
+            return of(deleteActivityCommentFailure({ error: error }));
           })
         );
       })
@@ -49,7 +49,7 @@ export class ActivitySafetyCheckEffects {
   deleteSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(deleteActivitySafetyCheckSuccess),
+        ofType(deleteActivityCommentSuccess),
         tap((response: any) => {
           return response;
         })
@@ -60,16 +60,16 @@ export class ActivitySafetyCheckEffects {
   // LOADS
   loads$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadActivitySafetyChecks),
+      ofType(loadActivityComments),
       mergeMap((payload) => {
-        return this.safetycheckService.loads(payload).pipe(
+        return this.commentService.loads(payload).pipe(
           map((response) => {
-            return loadActivitySafetyChecksSuccess({
+            return loadActivityCommentsSuccess({
               data: { ...response },
             });
           }),
           catchError((error) => {
-            return of(loadActivitySafetyChecksFailure({ error: error }));
+            return of(loadActivityCommentsFailure({ error: error }));
           })
         );
       })
@@ -78,16 +78,16 @@ export class ActivitySafetyCheckEffects {
 
   loadMore$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadMoreActivitySafetyChecks),
+      ofType(loadMoreActivityComments),
       mergeMap((payload) => {
-        return this.safetycheckService.loads({ next: payload?.next }).pipe(
+        return this.commentService.loads({ next: payload?.next }).pipe(
           map((response) => {
-            return loadMoreActivitySafetyChecksSuccess({
+            return loadMoreActivityCommentsSuccess({
               data: { ...response },
             });
           }),
           catchError((error) => {
-            return of(loadActivitySafetyChecksFailure({ error: error }));
+            return of(loadActivityCommentsFailure({ error: error }));
           })
         );
       })
@@ -97,7 +97,7 @@ export class ActivitySafetyCheckEffects {
   loadsSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(loadActivitySafetyChecksSuccess),
+        ofType(loadActivityCommentsSuccess),
         map((response: any) => {
           return response;
         })

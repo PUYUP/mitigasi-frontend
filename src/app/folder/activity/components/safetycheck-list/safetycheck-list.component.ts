@@ -39,7 +39,7 @@ export class SafetycheckListComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(
       loadActivitySafetyChecks({
-        user: this.user?.hexid,
+        user_id: this.user?.hexid,
         content_type: 'hazard',
       })
     );
@@ -54,7 +54,7 @@ export class SafetycheckListComponent implements OnInit {
       this.store.dispatch(
         loadMoreActivitySafetyChecks({
           next: this.next,
-          user: this.user?.hexid,
+          user_id: this.user?.hexid,
           content_type: 'hazard',
         })
       );

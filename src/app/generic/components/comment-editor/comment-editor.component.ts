@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { Store } from '@ngrx/store';
+import { ActionsSubject, Store } from '@ngrx/store';
+import { skip } from 'rxjs/operators';
 import { AppState } from 'src/app/store/reducers';
 import {
   createComment,
@@ -18,17 +19,41 @@ export class CommentEditorComponent implements OnInit {
   @Input('object_id') object_id: any;
   @Input('item') item: any;
   @Input('parent') parent: any;
+  @Input('from') from: string;
 
   formGroup: FormGroup;
+  isLoading: boolean = false;
 
   constructor(
     public modalCtrl: ModalController,
     private fb: FormBuilder,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private actionListener$: ActionsSubject
   ) {}
 
   ngOnInit() {
     this.initForm();
+
+    this.actionListener$.pipe(skip(1)).subscribe((action) => {
+      if (
+        action.type == '[Comment] Create Comment Success' ||
+        action.type == '[Comment] Update Comment Success' ||
+        action.type == '[Comment] Create Comment Failure'
+      ) {
+        this.formGroup.reset();
+        this.isLoading = false;
+      }
+
+      this.modalCtrl.getTop().then((v: any) => {
+        if (
+          v &&
+          (action.type == '[Comment] Create Comment Success' ||
+            action.type == '[Comment] Update Comment Success')
+        ) {
+          this.modalCtrl.dismiss();
+        }
+      });
+    });
   }
 
   /**
@@ -47,6 +72,8 @@ export class CommentEditorComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
+
     let data = { ...this.formGroup.value };
 
     if (this.item && this.item?.uuid) {
@@ -57,6 +84,7 @@ export class CommentEditorComponent implements OnInit {
         content_type: this.content_type,
         object_id: this.object_id,
         parent: this.parent,
+        from: this.from,
       };
 
       this.store.dispatch(createComment({ data: data }));

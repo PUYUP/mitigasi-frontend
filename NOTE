@@ -3,3 +3,6 @@
 + bugs loading tidak dibutuhkan
 + bugs store tidak merespon saat menghapus safetycheck
 + bugs register nomor ponsel tidak masuk
++ bugs belum login ketika klik Tanggapi arahkan ke login page
++ bugs edit hazard tanpa tanggal error occur_at
++ bugs occur_at wrong format

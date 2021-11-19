@@ -1,85 +1,131 @@
-<ng-container *ngIf="comment$ | async as comment">
-  <h6 class="small ps-3 pt-2">
-    {{ parent ? "Balasan" : "Komentar" }}
-  </h6>
+<ion-header>
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
 
-  <div *ngIf="comment?.status == 'loading'" class="text-center m-4">
-    <ion-spinner></ion-spinner>
-  </div>
+    <ion-title size="small">Tanggapan</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <div
-    *ngIf="comment?.status == 'loaded' && comment?.data?.results?.length == 0"
-    class="ps-3 small"
-  >
-    <ion-text>Belum ada komentar. Jadi yang pertama!</ion-text>
-  </div>
+<ion-content color="light">
+  <app-comment-editor
+    *ngIf="token"
+    [from]="'comment-list'"
+    [content_type]="'hazard'"
+    [object_id]="objectId"
+  ></app-comment-editor>
 
-  <ion-card *ngFor="let item of comment?.data?.results">
-    <ion-card-header>
-      <ion-card-subtitle class="d-flex w-100">
-        <ion-text class="fw-bold" color="dark">
-          {{ item.activity_author }}
-        </ion-text>
-        <ion-text class="ms-auto">
-          {{ item.create_at | date: "medium" }}
-        </ion-text>
-      </ion-card-subtitle>
-    </ion-card-header>
+  <p *ngIf="!token" class="small text-center p-3 mb-1">
+    Login untuk menanggapi
+  </p>
 
-    <ion-card-content>
-      <figure
-        *ngIf="item?.parent?.description"
-        class="border-start border-2 ps-3"
-      >
-        <blockquote class="blockquote">
-          <p [innerHTML]="item?.parent?.description"></p>
-        </blockquote>
-
-        <figcaption class="blockquote-footer">
-          {{ item?.parent?.activity_author }}
-        </figcaption>
-      </figure>
-
-      <div [innerHTML]="item.description"></div>
-
-      <ion-buttons *ngIf="item.authored" size="small" class="mt-2 d-flex w-100">
-        <ion-button color="danger" (click)="delete(item)">
-          <ion-icon name="trash-outline" slot="start" size="small"></ion-icon>
-          <ion-text>Hapus</ion-text>
-        </ion-button>
-
-        <ion-button class="ms-auto" (click)="openCommentEditor(item)">
-          <ion-icon name="create-outline" slot="start" size="small"></ion-icon>
-          <ion-text>Edit</ion-text>
-        </ion-button>
-      </ion-buttons>
-
-      <div class="d-flex justify-content-end">
-        <ion-buttons *ngIf="!item.authored" size="small">
-          <ion-button (click)="openReplyEditor(item.uuid)">
-            <ion-icon
-              name="arrow-redo-outline"
-              slot="start"
-              size="small"
-              class="me-1"
-            ></ion-icon>
-
-            <ion-text>Balas</ion-text>
-          </ion-button>
-        </ion-buttons>
-      </div>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-infinite-scroll
-    [disabled]="!next"
-    threshold="100px"
-    (ionInfinite)="onInfinite($event)"
-  >
-    <ion-infinite-scroll-content
-      loadingSpinner="bubbles"
-      loadingText="Loading more data..."
+  <ng-container *ngIf="comment$ | async as comment">
+    <ion-button
+      *ngIf="comment?.data?.next"
+      fill="clear"
+      expand="block"
+      class="mb-2 mx-3"
+      (click)="loadPrevious()"
+      [disabled]="loadingPrevious"
     >
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-</ng-container>
+      <ion-text *ngIf="!loadingPrevious">Komentar sebelumnya</ion-text>
+      <ion-spinner *ngIf="loadingPrevious" name="dots"></ion-spinner>
+    </ion-button>
+
+    <div *ngIf="comment?.status == 'loading'" class="text-center m-4">
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <div
+      *ngIf="comment?.status == 'loaded' && comment?.data?.results?.length == 0"
+      class="ps-3 small"
+    >
+      <ion-text>Belum ada komentar. Jadi yang pertama!</ion-text>
+    </div>
+
+    <ng-container *ngFor="let item of comment?.data?.results">
+      <ion-card class="mx-0 rounded-0 shadow-none mt-0" id="{{ item.uuid }}">
+        <ion-card-header>
+          <ion-card-subtitle class="d-flex w-100">
+            <ion-text class="fw-bold" color="dark">
+              {{ item.activity_author }}
+            </ion-text>
+            <ion-text class="ms-auto">
+              {{ item.create_at | date: "medium" }}
+            </ion-text>
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <figure
+            *ngIf="item?.parent?.description"
+            class="border-start border-2 ps-3"
+          >
+            <blockquote class="blockquote">
+              <p [innerHTML]="item?.parent?.description"></p>
+            </blockquote>
+
+            <figcaption class="blockquote-footer">
+              {{ item?.parent?.activity_author }}
+            </figcaption>
+          </figure>
+
+          <div [innerHTML]="item.description"></div>
+
+          <ion-buttons
+            *ngIf="item.authored"
+            size="small"
+            class="mt-2 d-flex w-100"
+          >
+            <ion-button color="danger" (click)="delete(item)">
+              <ion-icon
+                name="trash-outline"
+                slot="start"
+                size="small"
+              ></ion-icon>
+              <ion-text>Hapus</ion-text>
+            </ion-button>
+
+            <ion-button class="ms-auto" (click)="openCommentEditor(item)">
+              <ion-icon
+                name="create-outline"
+                slot="start"
+                size="small"
+              ></ion-icon>
+              <ion-text>Edit</ion-text>
+            </ion-button>
+          </ion-buttons>
+
+          <!--
+          <div *ngIf="!item.authored" class="d-flex justify-content-start pt-1">
+            <ion-button
+              (click)="openReplyEditor(item.uuid)"
+              mode="ios"
+              size="small"
+              fill="outline"
+              color="medium"
+            >
+              <ion-text>Tanggapi</ion-text>
+            </ion-button>
+          </div>
+          -->
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+
+    <!--
+    <ion-infinite-scroll
+      [disabled]="!next"
+      threshold="100px"
+      (ionInfinite)="onInfinite($event)"
+    >
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data..."
+      >
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    -->
+  </ng-container>
+</ion-content>

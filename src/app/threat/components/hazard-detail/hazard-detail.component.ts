@@ -1,6 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActionSheetController, ModalController } from '@ionic/angular';
+import {
+  ActionSheetController,
+  IonicSwiper,
+  ModalController,
+} from '@ionic/angular';
 import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
@@ -21,6 +25,11 @@ import { selectHazard } from '../../store/selectors/hazard/hazard.selectors';
 import { HazardDetailMapComponent } from '../hazard-detail-map/hazard-detail-map.component';
 import { HazardEditorComponent } from '../hazard-editor/hazard-editor.component';
 
+import SwiperCore, { Manipulation, Pagination, SwiperOptions } from 'swiper';
+import { SwiperComponent } from 'swiper/angular';
+
+SwiperCore.use([IonicSwiper, Manipulation, Pagination]);
+
 @Component({
   selector: 'app-hazard-detail',
   templateUrl: './hazard-detail.component.html',
@@ -28,6 +37,21 @@ import { HazardEditorComponent } from '../hazard-editor/hazard-editor.component'
 })
 export class HazardDetailComponent implements OnInit {
   @ViewChild(HazardDetailMapComponent) map: HazardDetailMapComponent;
+  @ViewChild('swiper', { static: false }) swiper?: SwiperComponent;
+
+  config: SwiperOptions = {
+    slidesPerView: 1,
+    spaceBetween: 0,
+    speed: 100,
+    enabled: true,
+    navigation: false,
+    pagination: true,
+    scrollbar: false,
+    autoplay: false,
+    zoom: true,
+    autoHeight: true,
+    loop: true,
+  };
 
   hazardClassify: string;
   hazardUuid: string;
@@ -37,7 +61,7 @@ export class HazardDetailComponent implements OnInit {
   safetycheck$: Observable<any>;
   onDestroy$ = new Subject<void>();
 
-  segmentSelected: string = 'list';
+  segmentActive: string = 'list';
 
   constructor(
     private route: ActivatedRoute,
@@ -188,7 +212,7 @@ export class HazardDetailComponent implements OnInit {
   }
 
   ionViewWillLeave() {
-    this.store.dispatch(resetHazard());
+    // this.store.dispatch(resetHazard());
   }
 
   showOptions(item: any) {
@@ -214,7 +238,7 @@ export class HazardDetailComponent implements OnInit {
    * Show list or map segment
    */
   segmentChanged(event: any) {
-    this.segmentSelected = event.detail.value;
+    this.segmentActive = event.detail.value;
   }
 
   /**
@@ -233,6 +257,11 @@ export class HazardDetailComponent implements OnInit {
 
   deleteItem(uuid: string) {
     this.store.dispatch(deleteHazard({ uuid: uuid }));
+  }
+
+  onSwiper(swiper: any) {
+    //console.log(swiper.appendSlide('<div>aad</div>'));
+    //swiper.update();
   }
 
   ngOnDestroy(): void {

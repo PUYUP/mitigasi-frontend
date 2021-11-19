@@ -7,6 +7,7 @@ import { SafetyCheckEffects } from '../generic/store/effects/safetycheck/safetyc
 import { HazardMapEffects } from '../threat/store/effects/hazard-map/hazard-map.effects';
 import { SafetyCheckMapEffects } from '../generic/store/effects/safetycheck-map/safetycheck-map.effects';
 import { ActivitySafetyCheckEffects } from '../folder/activity/store/effects/safetycheck/safetycheck.effects';
+import { ActivityCommentEffects } from '../folder/activity/store/effects/comment/comment.effects';
 
 export const AppEffects = [
   PersonSecurecodeEffects,
@@ -18,4 +19,5 @@ export const AppEffects = [
   SafetyCheckEffects,
   SafetyCheckMapEffects,
   ActivitySafetyCheckEffects,
+  ActivityCommentEffects,
 ];

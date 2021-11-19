@@ -4,28 +4,28 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/store/reducers';
 import {
-  loadHazards,
-  loadMoreHazards,
-} from 'src/app/threat/store/actions/hazard/hazard.actions';
-import { selectHazards } from 'src/app/threat/store/selectors/hazard/hazard.selectors';
+  loadActivityComments,
+  loadMoreActivityComments,
+} from '../../store/actions/comment/comment.actions';
+import { selectActivityComments } from '../../store/selectors/comment/comment.selectors';
 
 @Component({
-  selector: 'app-hazard-list',
-  templateUrl: './hazard-list.component.html',
-  styleUrls: ['./hazard-list.component.scss'],
+  selector: 'app-comment-list',
+  templateUrl: './comment-list.component.html',
+  styleUrls: ['./comment-list.component.scss'],
 })
-export class HazardListComponent implements OnInit {
+export class CommentListComponent implements OnInit {
   @Input('user') user: any;
 
-  hazard$: Observable<any>;
+  comment$: Observable<any>;
   onDestroy$ = new Subject<void>();
 
   event: any;
   next: string;
 
   constructor(private store: Store<AppState>) {
-    this.hazard$ = this.store.pipe(select(selectHazards));
-    this.hazard$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
+    this.comment$ = this.store.pipe(select(selectActivityComments));
+    this.comment$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
       if (state?.status == 'loaded') {
         this.next = state?.data?.next;
       }
@@ -35,7 +35,12 @@ export class HazardListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(loadHazards({ user_id: this.user?.hexid }));
+    this.store.dispatch(
+      loadActivityComments({
+        user_id: this.user?.hexid,
+        content_type: 'hazard',
+      })
+    );
   }
   /**
    * Infinite scroll...
@@ -45,9 +50,10 @@ export class HazardListComponent implements OnInit {
 
     if (this.next) {
       this.store.dispatch(
-        loadMoreHazards({
+        loadMoreActivityComments({
           next: this.next,
           user_id: this.user?.hexid,
+          content_type: 'hazard',
         })
       );
     }

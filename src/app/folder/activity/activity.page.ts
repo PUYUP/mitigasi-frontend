@@ -8,7 +8,7 @@ import { UserService } from 'src/app/person/services/user/user.service';
 })
 export class ActivityPage implements OnInit {
   user: any;
-  segmentSelected: string = 'hazard';
+  segmentActive: string = 'hazard';
 
   constructor(private userService: UserService) {}
 
@@ -20,6 +20,6 @@ export class ActivityPage implements OnInit {
    * Sgement start here
    */
   segmentChanged(event: any) {
-    this.segmentSelected = event.detail.value;
+    this.segmentActive = event.detail.value;
   }
 }

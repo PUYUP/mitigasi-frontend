@@ -39,12 +39,14 @@ export const reducer = createReducer(
     };
   }),
   on(createCommentSuccess, (state, payload) => {
+    let results = state.data?.results ? state.data.results : [];
+
     return {
       ...state,
       status: 'loaded',
       data: {
         ...state.data,
-        results: [...state.data.results, payload.data],
+        results: [...results, payload.data],
       },
     };
   }),
@@ -73,17 +75,8 @@ export const reducer = createReducer(
 
   // DELETE
   on(deleteComment, (state, payload) => {
-    let results = state.data.results;
-    let newResults = results.filter((d: any) => {
-      return d.uuid != payload.uuid;
-    });
-
     return {
       ...state,
-      data: {
-        ...state.data,
-        results: newResults,
-      },
     };
   }),
   on(deleteCommentSuccess, (state, payload) => {
@@ -133,7 +126,7 @@ export const reducer = createReducer(
   }),
   on(loadMoreCommentsSuccess, (state, payload) => {
     let results = state.data.results;
-    let mergeResults = [...results, ...payload.data.results];
+    let mergeResults = [...payload.data.results, ...results];
 
     return {
       ...state,

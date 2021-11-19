@@ -1,26 +1,35 @@
-<ng-container *ngIf="hazard$ | async as hazard">
-  <div *ngIf="hazard?.status == 'loading'" class="ion-padding text-center">
+<ng-container *ngIf="comment$ | async as comment">
+  <div *ngIf="comment?.status == 'loading'" class="ion-padding text-center">
     <ion-spinner name="crescent"></ion-spinner>
   </div>
 
-  <ng-container *ngIf="hazard?.status != 'loading'">
-    <p *ngIf="hazard?.data?.results?.length <= 0" class="small text-center p-3">
-      Belum mengirim info apapun
+  <ng-container *ngIf="comment?.status != 'loading'">
+    <p
+      *ngIf="comment?.data?.results?.length <= 0"
+      class="small text-center p-3"
+    >
+      Belum mengirim tanggapan apapun
     </p>
 
     <ion-list
-      *ngIf="hazard?.data?.results?.length > 0"
+      *ngIf="comment?.data?.results?.length > 0"
       lines="full"
       class="pt-0"
     >
-      <ng-container *ngFor="let item of hazard?.data?.results">
+      <ng-container *ngFor="let item of comment?.data?.results">
         <ion-item-sliding>
           <ion-item
             detail="true"
-            [routerLink]="['/Threat', item.classify, item.uuid]"
+            [routerLink]="[
+              '/Threat',
+              item?.content_object?.classify,
+              item?.content_object?.uuid,
+              'Comment'
+            ]"
           >
             <ion-label class="ion-text-wrap">
-              <strong>{{ item?.incident }}</strong>
+              <strong>{{ item?.content_object?.incident }}</strong>
+              <p>{{ item.description }}</p>
               <p class="small pt-2">{{ item.create_at | date: "medium" }}</p>
             </ion-label>
           </ion-item>

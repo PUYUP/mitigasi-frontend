@@ -70,7 +70,7 @@ export class SafetyCheckEditorComponent implements OnInit {
   uploader: FileUploader;
   isApp: boolean = false;
 
-  segmentSelected = '0';
+  segmentActive = '0';
   dateNow: any;
   geocoderResult: any;
   locationObj: any;
@@ -178,7 +178,7 @@ export class SafetyCheckEditorComponent implements OnInit {
     this.buildForm();
 
     if (this.condition == 'safe') {
-      this.segmentSelected = '2';
+      this.segmentActive = '2';
     }
 
     this.actionListener$
@@ -213,9 +213,9 @@ export class SafetyCheckEditorComponent implements OnInit {
    * On swiper slide change
    */
   async onSlideChange(swiper: any) {
-    this.segmentSelected = await this.swiper.activeIndex;
+    this.segmentActive = await this.swiper.activeIndex;
 
-    if (this.segmentSelected == '2') {
+    if (this.segmentActive == '2') {
       this.swiper.allowTouchMove = false;
       this.map.triggerMap();
     } else {
@@ -291,7 +291,7 @@ export class SafetyCheckEditorComponent implements OnInit {
    * Sgement start here
    */
   segmentChanged(event: any) {
-    this.segmentSelected = event.detail.value;
+    this.segmentActive = event.detail.value;
     this.swiper.slideTo(+event.detail.value);
   }
 

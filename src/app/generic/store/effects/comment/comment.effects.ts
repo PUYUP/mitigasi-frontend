@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { CommentService } from 'src/app/generic/services/comment/comment.service';
+import { AppState } from 'src/app/store/reducers';
+import { instantUpdateHazard } from 'src/app/threat/store/actions/hazard/hazard.actions';
 import {
   createComment,
   createCommentFailure,
@@ -31,6 +34,7 @@ export class CommentEffects {
     private actions$: Actions,
     private commentService: CommentService,
     private router: Router,
+    private store: Store<AppState>,
     public modalCtrl: ModalController
   ) {}
 
@@ -41,16 +45,8 @@ export class CommentEffects {
       mergeMap((payload) => {
         return this.commentService.create(payload.data).pipe(
           map((response) => {
-            // close CommentEditorComponent
-            const modal = this.modalCtrl.getTop();
-            if (modal) {
-              this.modalCtrl.dismiss({
-                ...response,
-              });
-            }
-
             return createCommentSuccess({
-              data: { ...response },
+              data: { ...response, from: payload.data?.from },
             });
           }),
           catchError((error) => {
@@ -61,6 +57,35 @@ export class CommentEffects {
     )
   );
 
+  createSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(createCommentSuccess),
+        tap((payload: any) => {
+          let contentObject = payload.data?.content_object;
+
+          this.store.dispatch(
+            instantUpdateHazard({
+              data: {
+                uuid: contentObject?.uuid,
+                comment_count: contentObject?.comment_count,
+              },
+            })
+          );
+
+          if (payload.data?.from == 'list') {
+            this.router.navigate([
+              '/Threat',
+              contentObject?.classify,
+              contentObject?.uuid,
+              'Comment',
+            ]);
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
   // UPDATE
   update$ = createEffect(() =>
     this.actions$.pipe(
@@ -69,12 +94,13 @@ export class CommentEffects {
         return this.commentService.update(payload.uuid, payload.data).pipe(
           map((response) => {
             // close CommentEditorComponent
-            const modal = this.modalCtrl.getTop();
-            if (modal) {
-              this.modalCtrl.dismiss({
-                ...response,
-              });
-            }
+            this.modalCtrl.getTop().then((v: any) => {
+              if (v) {
+                this.modalCtrl.dismiss({
+                  ...response,
+                });
+              }
+            });
 
             return updateCommentSuccess({
               data: { ...response },
@@ -105,6 +131,26 @@ export class CommentEffects {
         );
       })
     )
+  );
+
+  deleteSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteCommentSuccess),
+        tap((payload: any) => {
+          let contentObject = payload.data?.content_object;
+
+          this.store.dispatch(
+            instantUpdateHazard({
+              data: {
+                uuid: contentObject?.uuid,
+                comment_count: contentObject?.comment_count - 1,
+              },
+            })
+          );
+        })
+      ),
+    { dispatch: false }
   );
 
   // LOADS

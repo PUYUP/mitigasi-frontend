@@ -69,7 +69,7 @@ export class HazardEditorComponent implements OnInit {
   uploader: FileUploader;
 
   threatClassify: any;
-  segmentSelected = '0';
+  segmentActive = '0';
   dateNow: any;
   geocoderResult: any;
   locationObj: any;
@@ -237,9 +237,9 @@ export class HazardEditorComponent implements OnInit {
    * On swiper slide change
    */
   async onSlideChange(swiper: any) {
-    this.segmentSelected = await this.swiper.activeIndex;
+    this.segmentActive = await this.swiper.activeIndex;
 
-    if (this.segmentSelected == '2') {
+    if (this.segmentActive == '2') {
       this.swiper.allowTouchMove = false;
       this.map.triggerMap();
     } else {
@@ -281,7 +281,7 @@ export class HazardEditorComponent implements OnInit {
    * Sgement start here
    */
   segmentChanged(event: any) {
-    this.segmentSelected = event.detail.value;
+    this.segmentActive = event.detail.value;
     this.swiper.slideTo(+event.detail.value);
 
     this.onOccurAtChange();
@@ -311,6 +311,7 @@ export class HazardEditorComponent implements OnInit {
   buildForm() {
     this.formGroup = this.fb.group({
       classify: ['', Validators.required],
+      occur_at: [''],
       occur_at_date: [''],
       occur_at_time: [''],
       incident: [
@@ -344,6 +345,9 @@ export class HazardEditorComponent implements OnInit {
         incident: this.item.incident,
         description: this.item.description,
         attachments: this.attachments,
+        occur_at: this.item.occur_at,
+        occur_at_date: this.item?.occur_at,
+        occur_at_time: this.item?.occur_at,
       });
 
       for (let loc of this.currentLocations) {
@@ -369,7 +373,7 @@ export class HazardEditorComponent implements OnInit {
       .utc()
       .format();
 
-    this.formGroup.value.occur_at = datetime;
+    this.formGroup.patchValue({ occur_at: datetime });
   }
 
   removeAttachment(picture: any) {

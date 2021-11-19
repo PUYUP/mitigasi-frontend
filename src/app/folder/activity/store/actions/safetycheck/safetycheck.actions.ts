@@ -19,7 +19,7 @@ export const deleteActivitySafetyCheckFailure = createAction(
 // LISTS
 export const loadActivitySafetyChecks = createAction(
   '[ActivitySafetyCheck] Load ActivitySafetyChecks',
-  props<{ content_type: string; object_id?: string; user?: string }>()
+  props<{ content_type: string; object_id?: string; user_id?: string }>()
 );
 
 export const loadActivitySafetyChecksSuccess = createAction(
@@ -33,7 +33,7 @@ export const loadMoreActivitySafetyChecks = createAction(
     next: string;
     content_type: string;
     object_id?: string;
-    user?: string;
+    user_id?: string;
   }>()
 );
 

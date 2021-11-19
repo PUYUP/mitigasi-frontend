@@ -36,7 +36,6 @@ import { SharedModule } from '../shared/shared.module';
     ThreatPage,
     HazardDetailComponent,
     HazardDetailMapComponent,
-    CommentEditorComponent,
     CommentListComponent,
     SafetyCheckEditorComponent,
     SafetyCheckListComponent,
@@ -46,7 +45,6 @@ import { SharedModule } from '../shared/shared.module';
   entryComponents: [
     HazardDetailComponent,
     HazardDetailMapComponent,
-    CommentEditorComponent,
     CommentListComponent,
     SafetyCheckEditorComponent,
     SafetyCheckListComponent,

@@ -5,6 +5,7 @@ import {
   createHazardSuccess,
   deleteHazard,
   deleteHazardSuccess,
+  instantUpdateHazard,
   loadHazard,
   loadHazardFailure,
   loadHazards,
@@ -230,6 +231,40 @@ export const reducer = createReducer(
     return {
       ...state,
       status: 'initialize',
+    };
+  }),
+
+  // INSTANT UPDATE
+  on(instantUpdateHazard, (state, payload) => {
+    let results = state?.data?.results;
+    let result = state?.data?.result;
+
+    if (results) {
+      results = results.map((d: any) => {
+        if (d.uuid == payload.data?.uuid) {
+          d = {
+            ...d,
+            comment_count: payload.data?.comment_count,
+          };
+        }
+
+        return d;
+      });
+    }
+
+    if (result) {
+      result = {
+        ...result,
+        comment_count: payload.data?.comment_count,
+      };
+    }
+
+    return {
+      ...state,
+      data: {
+        results: results,
+        result: result,
+      },
     };
   })
 );

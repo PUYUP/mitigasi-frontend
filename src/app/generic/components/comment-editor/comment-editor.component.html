@@ -1,31 +1,62 @@
-<ion-header>
-  <ion-toolbar color="dark">
-    <ion-buttons slot="start">
-      <ion-button (click)="dismiss()">
-        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
-    <ion-title size="small">
-      {{ parent ? "Balas" : item?.uuid ? "Update" : "Kirim" }}
-      Komentar
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
+<ng-container *ngIf="from == 'comment-list'">
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <ion-item lines="full">
       <ion-textarea
         autosize
         rows="2"
         formControlName="description"
-        placeholder="Tulis komentar..."
+        placeholder="Tulis tanggapan..."
       ></ion-textarea>
     </ion-item>
 
-    <ion-button expand="block" type="submit" class="ion-margin" color="warning">
+    <ion-button
+      expand="block"
+      type="submit"
+      class="ion-margin"
+      color="warning"
+      [disabled]="formGroup.invalid || isLoading"
+    >
       Kirim
     </ion-button>
   </form>
-</ion-content>
+</ng-container>
+
+<ng-container *ngIf="from != 'comment-list'">
+  <ion-header>
+    <ion-toolbar color="dark">
+      <ion-buttons slot="start">
+        <ion-button (click)="dismiss()">
+          <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <ion-title size="small">
+        {{ parent ? "Balas" : item?.uuid ? "Update" : "Kirim" }}
+        Tanggapan
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <ion-item lines="full">
+        <ion-textarea
+          autosize
+          rows="2"
+          formControlName="description"
+          placeholder="Tulis tanggapan..."
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-button
+        expand="block"
+        type="submit"
+        class="ion-margin"
+        color="warning"
+        [disabled]="formGroup.invalid || isLoading"
+      >
+        Kirim
+      </ion-button>
+    </form>
+  </ion-content>
+</ng-container>

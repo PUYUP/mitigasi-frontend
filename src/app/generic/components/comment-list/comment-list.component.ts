@@ -1,8 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
-import { select, Store } from '@ngrx/store';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController, IonContent, ModalController } from '@ionic/angular';
+import { ActionsSubject, select, Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { skip, takeUntil } from 'rxjs/operators';
+import { UserService } from 'src/app/person/services/user/user.service';
 import { AppState } from 'src/app/store/reducers';
 import {
   deleteComment,
@@ -18,32 +26,39 @@ import { CommentEditorComponent } from '../comment-editor/comment-editor.compone
   styleUrls: ['./comment-list.component.scss'],
 })
 export class CommentListComponent implements OnInit {
-  @Input('content_type') content_type: string;
-  @Input('object_id') object_id: string;
-  @Input('parent') parent: string;
+  @ViewChild(IonContent, { static: false }) content: IonContent;
 
   comment$: Observable<any>;
   onDestroy$ = new Subject<void>();
+  contentType: string = 'hazard';
+  objectId: string = '';
+  token: any = null;
 
   event: any;
   next: string;
+  loadingPrevious: boolean = false;
 
   constructor(
     private store: Store<AppState>,
+    private route: ActivatedRoute,
     public modalCtrl: ModalController,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    private actionListener$: ActionsSubject,
+    private changeDetectorRef: ChangeDetectorRef,
+    private userService: UserService
   ) {
     this.comment$ = this.store.pipe(select(selectComments));
     this.comment$.pipe(takeUntil(this.onDestroy$)).subscribe((state: any) => {
       if (state?.status == 'loaded') {
         this.next = state?.data?.next;
+        this.loadingPrevious = false;
       }
 
       if (this.event) this.event.target.complete();
     });
   }
 
-  async _showCommentEditor(hazard: any, item: any = {}) {
+  async _showCommentEditor(item: any = {}) {
     const dialog = await this.modalCtrl.create({
       component: CommentEditorComponent,
       backdropDismiss: false,
@@ -60,9 +75,8 @@ export class CommentListComponent implements OnInit {
       component: CommentEditorComponent,
       backdropDismiss: false,
       componentProps: {
-        object_id: this.object_id,
-        content_type: this.content_type,
-        parent: parent,
+        object_id: this.objectId,
+        content_type: this.contentType,
       },
     });
 
@@ -95,13 +109,27 @@ export class CommentListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.objectId = this.route.snapshot.paramMap.get('hazard_uuid');
+    this.token = this.userService.token;
+
     this.store.dispatch(
       loadComments({
-        content_type: this.content_type,
-        object_id: this.object_id,
-        parent: this.parent,
+        content_type: this.contentType,
+        object_id: this.objectId,
       })
     );
+
+    this.actionListener$.pipe(skip(1)).subscribe((action: any) => {
+      if (action.type == '[Comment] Create Comment Success') {
+        setTimeout(() => {
+          this.content.scrollToBottom();
+        }, 10);
+      }
+
+      if (action.type == '[Comment] Delete Comment Success') {
+        this.changeDetectorRef.detectChanges();
+      }
+    });
   }
 
   onInfinite(event: any) {
@@ -111,16 +139,27 @@ export class CommentListComponent implements OnInit {
       this.store.dispatch(
         loadMoreComments({
           next: this.next,
-          content_type: this.content_type,
-          object_id: this.object_id,
-          parent: this.parent,
+          content_type: this.contentType,
+          object_id: this.objectId,
         })
       );
     }
   }
 
+  loadPrevious() {
+    this.loadingPrevious = true;
+
+    this.store.dispatch(
+      loadMoreComments({
+        next: this.next,
+        content_type: this.contentType,
+        object_id: this.objectId,
+      })
+    );
+  }
+
   openCommentEditor(item: any) {
-    this._showCommentEditor(null);
+    this._showCommentEditor(item);
   }
 
   openReplyEditor(parent: string) {
@@ -131,8 +170,9 @@ export class CommentListComponent implements OnInit {
     this._presentDeleteConfirm(item);
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+    this.changeDetectorRef.detach();
   }
 }
