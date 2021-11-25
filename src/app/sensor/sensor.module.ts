@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { SensorPageRoutingModule } from './sensor-routing.module';
 
 import { SensorPage } from './sensor.page';
+import { FloodSensorListComponent } from './components/flood-sensor-list/flood-sensor-list.component';
+import { FloodSensorDetailComponent } from './components/flood-sensor-detail/flood-sensor-detail.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    SensorPageRoutingModule
+  imports: [CommonModule, FormsModule, IonicModule, SensorPageRoutingModule],
+  declarations: [
+    SensorPage,
+    FloodSensorListComponent,
+    FloodSensorDetailComponent,
   ],
-  declarations: [SensorPage]
+  entryComponents: [FloodSensorListComponent],
 })
 export class SensorPageModule {}

@@ -6,7 +6,10 @@ import { of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { SafetyCheckService } from 'src/app/generic/services/safetycheck/safetycheck.service';
 import { AppState } from 'src/app/store/reducers';
-import { updateHazardSuccess } from 'src/app/threat/store/actions/hazard/hazard.actions';
+import {
+  instantUpdateHazard,
+  updateHazardSuccess,
+} from 'src/app/threat/store/actions/hazard/hazard.actions';
 import {
   createSafetyCheck,
   createSafetyCheckFailure,
@@ -66,14 +69,16 @@ export class SafetyCheckEffects {
             this.modalCtrl.dismiss();
           }
 
-          let content_object = response?.data?.content_object;
-          let content_objectData = { ...content_object };
+          let contentObject = response?.data?.content_object;
 
-          return this.store.dispatch(
-            updateHazardSuccess({
+          this.store.dispatch(
+            instantUpdateHazard({
               data: {
-                ...content_objectData,
-                from_safetycheck: true,
+                uuid: contentObject?.uuid,
+                safetycheck_confirmed: contentObject?.safetycheck_confirmed,
+                safetycheck_affected_count:
+                  contentObject?.safetycheck_affected_count,
+                safetycheck_safe_count: contentObject?.safetycheck_safe_count,
               },
             })
           );
@@ -144,14 +149,16 @@ export class SafetyCheckEffects {
       this.actions$.pipe(
         ofType(deleteSafetyCheckSuccess),
         tap(async (response: any) => {
-          let content_object = response?.data?.content_object;
-          let content_objectData = { ...content_object };
+          let contentObject = response?.data?.content_object;
 
-          return this.store.dispatch(
-            updateHazardSuccess({
+          this.store.dispatch(
+            instantUpdateHazard({
               data: {
-                ...content_objectData,
-                from_safetycheck: true,
+                uuid: contentObject?.uuid,
+                safetycheck_confirmed: contentObject?.safetycheck_confirmed,
+                safetycheck_affected_count:
+                  contentObject?.safetycheck_affected_count,
+                safetycheck_safe_count: contentObject?.safetycheck_safe_count,
               },
             })
           );

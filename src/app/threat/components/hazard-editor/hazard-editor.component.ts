@@ -386,15 +386,28 @@ export class HazardEditorComponent implements OnInit {
   onSubmit() {
     this.isLoading = true;
 
+    let dataCleanest = {};
     let data = {
       ...this.formGroup.value,
       attachments: this.attachments,
     };
 
+    for (let key in data) {
+      let value = data[key];
+
+      if (value && value != undefined) {
+        if (key != 'next' && key != 'type' && value) {
+          dataCleanest[key] = value;
+        }
+      }
+    }
+
     if (this.item && this.item?.uuid) {
-      this.store.dispatch(updateHazard({ uuid: this.item.uuid, data: data }));
+      this.store.dispatch(
+        updateHazard({ uuid: this.item.uuid, data: dataCleanest })
+      );
     } else {
-      this.store.dispatch(createHazard({ data: data }));
+      this.store.dispatch(createHazard({ data: dataCleanest }));
     }
   }
 

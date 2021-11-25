@@ -13,10 +13,11 @@
       lines="full"
       class="pt-0"
     >
-      <ng-container *ngFor="let item of hazard?.data?.results">
+      <ng-container *ngFor="let item of hazard?.data?.results; let last = last">
         <ion-item-sliding>
           <ion-item
             detail="true"
+            [lines]="last ? 'none' : 'full'"
             [routerLink]="['/Threat', item.classify, item.uuid]"
           >
             <ion-label class="ion-text-wrap">
@@ -26,7 +27,9 @@
           </ion-item>
 
           <ion-item-options side="end">
-            <ion-item-option color="danger">Hapus</ion-item-option>
+            <ion-item-option color="danger" (click)="delete(item)">
+              Hapus
+            </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
       </ng-container>

@@ -19,7 +19,12 @@ export const deleteActivityCommentFailure = createAction(
 // LISTS
 export const loadActivityComments = createAction(
   '[ActivityComment] Load ActivityComments',
-  props<{ content_type: string; object_id?: string; user_id?: string }>()
+  props<{
+    content_type: string;
+    object_id?: string;
+    user_id?: string;
+    sort?: string;
+  }>()
 );
 
 export const loadActivityCommentsSuccess = createAction(
@@ -34,6 +39,7 @@ export const loadMoreActivityComments = createAction(
     content_type: string;
     object_id?: string;
     user_id?: string;
+    sort?: string;
   }>()
 );
 

@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/store/reducers';
 import {
+  deleteActivitySafetyCheck,
   loadActivitySafetyChecks,
   loadMoreActivitySafetyChecks,
 } from '../../store/actions/safetycheck/safetycheck.actions';
@@ -41,9 +42,11 @@ export class SafetycheckListComponent implements OnInit {
       loadActivitySafetyChecks({
         user_id: this.user?.hexid,
         content_type: 'hazard',
+        sort: 'newest',
       })
     );
   }
+
   /**
    * Infinite scroll...
    */
@@ -56,8 +59,16 @@ export class SafetycheckListComponent implements OnInit {
           next: this.next,
           user_id: this.user?.hexid,
           content_type: 'hazard',
+          sort: 'newest',
         })
       );
     }
+  }
+
+  /**
+   * Delete
+   */
+  delete(item: any) {
+    this.store.dispatch(deleteActivitySafetyCheck({ uuid: item.uuid }));
   }
 }

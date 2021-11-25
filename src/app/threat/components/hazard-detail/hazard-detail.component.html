@@ -15,16 +15,19 @@
     </div>
 
     <ng-container *ngIf="item?.status == 'loaded' && item.data?.result">
-      <ion-card class="mx-0 rounded-0 shadow-none">
+      <ion-card class="mx-0 rounded-0 shadow-none mt-0">
         <ion-card-header class="pb-0">
           <ion-card-subtitle>
             <div class="d-flex">
               <div>
                 <ion-text class="fw-bold" *ngIf="item.data?.result.source">
                   {{ item.data?.result.source }}
-                  &mdash;
                 </ion-text>
-                {{ item.data?.result.occur_at | date: "medium" }}
+
+                <ion-text *ngIf="item.data?.result.occur_at">
+                  &mdash;
+                  {{ item.data?.result.occur_at | date: "medium" }}
+                </ion-text>
               </div>
 
               <div class="ms-auto">

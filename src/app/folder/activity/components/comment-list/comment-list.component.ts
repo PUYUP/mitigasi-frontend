@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/store/reducers';
 import {
+  deleteActivityComment,
   loadActivityComments,
   loadMoreActivityComments,
 } from '../../store/actions/comment/comment.actions';
@@ -39,9 +40,11 @@ export class CommentListComponent implements OnInit {
       loadActivityComments({
         user_id: this.user?.hexid,
         content_type: 'hazard',
+        sort: 'newest',
       })
     );
   }
+
   /**
    * Infinite scroll...
    */
@@ -54,8 +57,16 @@ export class CommentListComponent implements OnInit {
           next: this.next,
           user_id: this.user?.hexid,
           content_type: 'hazard',
+          sort: 'newest',
         })
       );
     }
+  }
+
+  /**
+   * Delete
+   */
+  delete(item: any) {
+    this.store.dispatch(deleteActivityComment({ uuid: item.uuid }));
   }
 }

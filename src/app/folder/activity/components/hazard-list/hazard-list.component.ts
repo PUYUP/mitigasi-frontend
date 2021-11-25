@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AppState } from 'src/app/store/reducers';
 import {
+  deleteHazard,
   loadHazards,
   loadMoreHazards,
 } from 'src/app/threat/store/actions/hazard/hazard.actions';
@@ -37,6 +38,7 @@ export class HazardListComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(loadHazards({ user_id: this.user?.hexid }));
   }
+
   /**
    * Infinite scroll...
    */
@@ -51,5 +53,12 @@ export class HazardListComponent implements OnInit {
         })
       );
     }
+  }
+
+  /**
+   * Delete
+   */
+  delete(item: any) {
+    this.store.dispatch(deleteHazard({ uuid: item.uuid }));
   }
 }

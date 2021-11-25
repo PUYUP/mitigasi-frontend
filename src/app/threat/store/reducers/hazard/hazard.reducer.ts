@@ -244,7 +244,7 @@ export const reducer = createReducer(
         if (d.uuid == payload.data?.uuid) {
           d = {
             ...d,
-            comment_count: payload.data?.comment_count,
+            ...payload.data,
           };
         }
 
@@ -255,7 +255,7 @@ export const reducer = createReducer(
     if (result) {
       result = {
         ...result,
-        comment_count: payload.data?.comment_count,
+        ...payload.data,
       };
     }
 

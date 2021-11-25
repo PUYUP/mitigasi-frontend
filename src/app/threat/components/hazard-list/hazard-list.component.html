@@ -11,9 +11,12 @@
             <div>
               <ion-text class="fw-bold" *ngIf="item.source">
                 {{ item.source }}
-                &mdash;
               </ion-text>
-              {{ item.occur_at | date: "medium" }}
+
+              <ion-text *ngIf="item.occur_at">
+                &mdash;
+                {{ item.occur_at | date: "medium" }}
+              </ion-text>
             </div>
             <div class="ms-auto">
               <ion-badge color="light">{{ item.classify_display }}</ion-badge>
